@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Player
@@ -6,13 +7,24 @@ namespace Player
 	{
 		private InputManager inputs;
 
+		[Header("Basic controls")]
 		[SerializeField] private float mouseSensivity;
-		private Camera cam;
-
-		private float xRotation;
-
-		[SerializeField] private float topClamp = 90f;
+		[SerializeField] private Transform playerBody;
+		[SerializeField] private Transform cameraPos;
+		[SerializeField] private float topClamp = 75f;
 		[SerializeField] private float bottomClamp = -90f;
+		[SerializeField] private float standingNearClippingFrame;
+		[SerializeField] private float crouchingNearClippingFrame;
+		
+		
+		[Space(10)]
+		[Header("Gameplay")]
+		[SerializeField] private float baseFOV;
+		[SerializeField] private float aimingFOV;
+		[SerializeField] private float aimTransitionSpeed;
+		
+		public CinemachineCamera cam;
+		private float xRotation;
 
 		private void Awake()
 		{
@@ -20,9 +32,8 @@ namespace Player
 		}
 
 		private void Start()
-		{
-			cam = FindFirstObjectByType<Camera>();
-			
+		{ 
+			cam = GameObject.FindGameObjectWithTag("CinemachineCam").GetComponent<CinemachineCamera>();
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
 		}
@@ -35,20 +46,34 @@ namespace Player
 			xRotation -= mouseY;
 			xRotation = Mathf.Clamp(xRotation, bottomClamp, topClamp);
 			
-			cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+			cameraPos.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 			
-			transform.Rotate(Vector3.up * mouseX);
+			playerBody.Rotate(Vector3.up * mouseX);
+		}
+
+		public void SetCameraPosition(bool isCrouched, Vector3 targetCameraPosition, float crouchTransitionSpeed)
+		{
+			if (isCrouched)
+			{
+				cam.Lens.NearClipPlane = crouchingNearClippingFrame;
+			}
+			else
+			{
+				cam.Lens.NearClipPlane = standingNearClippingFrame;
+			}
+			
+			cameraPos.transform.localPosition = Vector3.Lerp(cameraPos.localPosition, targetCameraPosition, crouchTransitionSpeed * Time.deltaTime);
 		}
 
 		public void SetAiming(bool aim)
 		{
 			if (aim)
 			{
-				cam.fieldOfView = 70;
+				cam.Lens.FieldOfView = Mathf.Lerp(cam.Lens.FieldOfView, aimingFOV, aimTransitionSpeed * Time.deltaTime);
 			}
 			else
 			{
-				cam.fieldOfView = 90;
+				cam.Lens.FieldOfView = Mathf.Lerp(cam.Lens.FieldOfView, baseFOV, aimTransitionSpeed * Time.deltaTime);
 			}
 		}
 	}

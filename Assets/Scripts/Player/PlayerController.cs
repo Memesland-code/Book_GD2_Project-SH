@@ -1,33 +1,151 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Player
 {
-	public class PlayerControler : MonoBehaviour
+	public class PlayerController : MonoBehaviour
 	{
-		private InputManager inputs;
+		private static readonly int MoveX = Animator.StringToHash("MoveX");
+		private static readonly int MoveY = Animator.StringToHash("MoveY");
+		private static readonly int IsCrouched = Animator.StringToHash("IsCrouched");
+
+		private InputManager input;
 	
 		[Header("Movement")]
-		[SerializeField] private float speed;
+		[SerializeField] private float baseSpeed;
+		[SerializeField] private float sprintSpeed;
+		[SerializeField] private float crouchSpeed;
+		private float currentSpeed;
 		
-		private float gravityValue = -9.81f;
+		[Header("Crouching")]
+		[SerializeField] private float crouchHeight;
+		[SerializeField] private Vector3 crouchCenter;
+		[SerializeField] private float crouchTransitionSpeed;
+		private float standHeight;
+		private Vector3 standCenter;
+		
+		[Header("Shooting system")]
+		[SerializeField] private GameObject arms;
+		[SerializeField] private float backwardsMoveSpeedMultiplier;
+		[SerializeField] private float aimMoveSpeedMultiplier;
+		[Space(10)]
+		[SerializeField] private GameObject CharBody;
+		[SerializeField] private GameObject CharHoody;
+		[SerializeField] private GameObject CharPants;
 		
 		private Rigidbody rb;
+		private Animator anim;
+		private CapsuleCollider playerCollider;
+		private CameraManager cameraManager;
+
+		[SerializeField] private Vector3 standCameraPosition = new (0, 1.65f, 0.15f);
+		[SerializeField] private Vector3 crouchedCameraPosition = new (0, 0.79f, 0.4f);
 		
 		private Vector3 playerVelocity;
 	
 		void Awake()
 		{
-			inputs = GetComponent<InputManager>();
+			input = GetComponent<InputManager>();
 			rb = GetComponent<Rigidbody>();
+			anim = GetComponent<Animator>();
+			playerCollider = GetComponent<CapsuleCollider>();
+			cameraManager = GetComponent<CameraManager>();
+		}
+
+		private void Start()
+		{
+			arms.SetActive(false);
+			
+			currentSpeed = baseSpeed;
+
+			standCenter = playerCollider.center;
+			standHeight = playerCollider.height;
+		}
+
+		private void Update()
+		{
+			UpdateMoveStatus();
+			UpdatePlayerColliderAndCam();
+			
+			cameraManager.SetAiming(input.isAiming);
+			if (input.isAiming)
+			{
+				arms.SetActive(true);
+				CharBody.SetActive(false);
+				CharHoody.SetActive(false);
+				CharPants.SetActive(false);
+			}
+			else
+			{
+				arms.SetActive(false);
+				CharBody.SetActive(true);
+				CharHoody.SetActive(true);
+				CharPants.SetActive(true);
+			}
+		}
+
+		private void UpdateMoveStatus()
+		{
+			if (input.isSprinting)
+			{
+				input.isCrouched = false;
+				currentSpeed = sprintSpeed;
+				anim.SetBool(IsCrouched, false);
+				anim.SetFloat(MoveX, input.moveInput.x + 0.25f); // Virtually sets animator to running state
+				anim.SetFloat(MoveY, input.moveInput.y + 0.25f);
+			}
+			else if (input.isCrouched)
+			{
+				currentSpeed = crouchSpeed;
+				anim.SetBool(IsCrouched, true);
+				anim.SetFloat(MoveX, input.moveInput.x);
+				anim.SetFloat(MoveY, input.moveInput.y);
+			}
+			else
+			{
+				currentSpeed = baseSpeed;
+				anim.SetFloat(MoveX, input.moveInput.x);
+				anim.SetFloat(MoveY, input.moveInput.y);
+			}
+
+			if (input.moveInput.x < 0)
+			{
+				currentSpeed /= backwardsMoveSpeedMultiplier;
+			}
+
+			if (input.isAiming)
+			{
+				currentSpeed /= aimMoveSpeedMultiplier;
+			}
+		}
+
+		private void UpdatePlayerColliderAndCam()
+		{
+			Vector3 targetCenter = standCenter;
+			float targetHeight = standHeight;
+			Vector3 targetCameraPosition = standCameraPosition;
+			
+			if (input.isCrouched)
+			{
+				targetCameraPosition = crouchedCameraPosition;
+				targetCenter = crouchCenter;
+				targetHeight = crouchHeight;
+			}
+
+			cameraManager.SetCameraPosition(input.isCrouched, targetCameraPosition, crouchTransitionSpeed);
+			playerCollider.height = Mathf.Lerp(playerCollider.height, targetHeight, crouchTransitionSpeed * Time.deltaTime);
+			playerCollider.center = Vector3.Lerp(playerCollider.center, targetCenter, crouchTransitionSpeed * Time.deltaTime);
 		}
 
 		private void FixedUpdate()
 		{
-			Vector3 direction = transform.right * inputs.moveInput.x + transform.forward * inputs.moveInput.y;
+			Vector3 direction = transform.right * input.moveInput.x + transform.forward * input.moveInput.y;
 			direction.Normalize();
-			rb.linearVelocity = new Vector3(direction.x * speed, rb.linearVelocity.y, direction.z * speed);
+			rb.linearVelocity = new Vector3(direction.x * currentSpeed, rb.linearVelocity.y, direction.z * currentSpeed);
+		}
+
+		public void Shoot()
+		{
+			//Physics.Raycast()
 		}
 	}
 }
