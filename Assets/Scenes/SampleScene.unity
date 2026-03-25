@@ -1767,14 +1767,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3649370962895282254, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
-      propertyPath: m_Height
-      value: 1.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3649370962895282254, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
-      propertyPath: m_Center.y
-      value: 0.9
-      objectReference: {fileID: 0}
     - target: {fileID: 7967720470420515756, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
       propertyPath: m_Name
       value: ZombieClassic
