@@ -1909,7 +1909,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 2
@@ -1969,10 +1969,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphAgent
-  m_Graph: {fileID: -4284660767690300797, guid: ad3216fc346c8344aa8561f3df41bc70, type: 2}
+  m_Graph: {fileID: -3481856513451920072, guid: ad3216fc346c8344aa8561f3df41bc70, type: 2}
   m_BlackboardVariableOverridesList:
   - rid: 6945940984704008547
-  - rid: 6945940984704008548
+  - rid: 6945940990268014970
+  - rid: 6945940990268014971
   m_OriginalGraph: {fileID: -4284660767690300797, guid: ad3216fc346c8344aa8561f3df41bc70, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -1987,14 +1988,22 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 7967720470420515756}
-    - rid: 6945940984704008548
+    - rid: 6945940990268014970
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
-          m_Value0: 15317947231724282386
-          m_Value1: 9523290646617699012
+          m_Value0: 13878198050667326164
+          m_Value1: 17405688955220025558
         Name: Target
         m_Value: {fileID: 0}
+    - rid: 6945940990268014971
+      type: {class: 'BlackboardVariable`1[[Behaviours.RangeDetector, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 17121280427523214542
+          m_Value1: 5258874961222526011
+        Name: New Range Detector
+        m_Value: {fileID: 3135418779121286566}
 --- !u!114 &3135418779121286566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2008,9 +2017,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Behaviours.RangeDetector
   detectionRadius: 10
+  overrideDetectionRadius: 1
   detectionMask:
     serializedVersion: 2
     m_Bits: 128
+  detectionAngle: 45
+  playerYOffset: 1.4
+  thisYOffset: 1.4
   showDebugVisuals: 1
 --- !u!1 &8259981354250618625
 GameObject:

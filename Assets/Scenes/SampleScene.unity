@@ -283,7 +283,7 @@ Transform:
   m_GameObject: {fileID: 323683331}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.248, z: 0.25}
+  m_LocalPosition: {x: 0, y: 2.125, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1187,7 +1187,7 @@ Transform:
   m_GameObject: {fileID: 847434549}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.248, z: 0.25}
+  m_LocalPosition: {x: 0, y: 2.125, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1676,7 +1676,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2242504330299685127, guid: 9e3e25973c4a910448e413bb57583cbc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.598
+      value: 0.475
       objectReference: {fileID: 0}
     - target: {fileID: 2242504330299685127, guid: 9e3e25973c4a910448e413bb57583cbc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1727,6 +1727,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1007666112569604207, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2708359781381208080, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.6058714
@@ -1767,19 +1771,92 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3135418779121286566, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: overrideDetectionRadius
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7967720470420515756, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
       propertyPath: m_Name
       value: ZombieClassic
       objectReference: {fileID: 0}
     - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: m_Graph
+      value: 
+      objectReference: {fileID: -3481856513451920072, guid: ad3216fc346c8344aa8561f3df41bc70, type: 2}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: 'managedReferences[6945940990268014970]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[UnityEngine.GameObject,
+        UnityEngine.CoreModule]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: 'managedReferences[6945940990268014971]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[Behaviours.RangeDetector,
+        Assembly-CSharp]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: managedReferences[6945940990268014970].Name
+      value: Target
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: managedReferences[6945940990268014971].Name
+      value: New Range Detector
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: m_BlackboardVariableOverridesList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
       propertyPath: managedReferences[6945940984704008548].m_Value
       value: 
       objectReference: {fileID: 1250299159}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: managedReferences[6945940990268014970].m_Value
+      value: 
+      objectReference: {fileID: 1250299159}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: managedReferences[6945940990268014971].m_Value
+      value: 
+      objectReference: {fileID: 3243616542737119936}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[1]'
+      value: 6945940990268014970
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[2]'
+      value: 6945940990268014971
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: managedReferences[6945940990268014970].GUID.m_Value0
+      value: 13878198050667326164
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: managedReferences[6945940990268014970].GUID.m_Value1
+      value: 17405688955220025558
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: managedReferences[6945940990268014971].GUID.m_Value0
+      value: 17121280427523214542
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057313189405653204, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+      propertyPath: managedReferences[6945940990268014971].GUID.m_Value1
+      value: 5258874961222526011
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+--- !u!114 &3243616542737119936 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3135418779121286566, guid: 17835d81fd545564f98bd462a2391f38, type: 3}
+  m_PrefabInstance: {fileID: 3243616542737119935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1b42ba6165fd5144aad47acc89a2398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Behaviours.RangeDetector
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

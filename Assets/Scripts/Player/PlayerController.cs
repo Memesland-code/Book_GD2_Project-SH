@@ -27,8 +27,11 @@ namespace Player
 		[SerializeField] private GameObject arms;
 		[SerializeField] private float backwardsMoveSpeedMultiplier;
 		[SerializeField] private float aimMoveSpeedMultiplier;
+		
 		[Space(10)]
 		[SerializeField] private GameObject charBody;
+		[SerializeField] private GameObject charEyeLashes;
+		[SerializeField] private GameObject charHair;
 		[SerializeField] private GameObject charHoody;
 		[SerializeField] private GameObject charPants;
 		
@@ -73,6 +76,14 @@ namespace Player
 				charBody.SetActive(false);
 				charHoody.SetActive(false);
 				charPants.SetActive(false);
+			}
+			else if (input.isCrouched)
+			{
+				arms.SetActive(false);
+				charBody.SetActive(false);
+				charEyeLashes.SetActive(false);
+				charHair.SetActive(false);
+				charHoody.SetActive(false);
 			}
 			else
 			{
