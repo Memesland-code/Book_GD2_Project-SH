@@ -686,7 +686,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7817147504419831605
 Transform:
   m_ObjectHideFlags: 0
@@ -893,7 +893,7 @@ Transform:
   m_GameObject: {fileID: 1498994181746552627}
   serializedVersion: 2
   m_LocalRotation: {x: 0.49119765, y: -0.50865006, z: -0.50865006, w: 0.49119765}
-  m_LocalPosition: {x: 0.0028832585, y: 0.00037080242, z: 0.0015299987}
+  m_LocalPosition: {x: -0.003038, y: 0, z: 0.001091}
   m_LocalScale: {x: 0.011249164, y: 0.01, z: 0.010001354}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3269,6 +3269,7 @@ GameObject:
   - component: {fileID: 7241588055254611750}
   - component: {fileID: 773307258268681205}
   - component: {fileID: 4248710205705206925}
+  - component: {fileID: 5105137358525871212}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3432,6 +3433,28 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5105137358525871212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5823232678074807873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8db5efe180f4ae1499fa1148e6e18081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player.GunPlayerWeapon
+  muzzle: {fileID: 1243971485570643478}
+  shootableLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  weaponRange: 100
+  maxMagazineAmmo: 10
+  currentInventoryAmmo: 7
+  reloadTime: 0.5
+  fireCooldown: 0.5
+  showDebugRay: 1
 --- !u!1 &5875697186065222197
 GameObject:
   m_ObjectHideFlags: 0

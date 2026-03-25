@@ -142,10 +142,5 @@ namespace Player
 			direction.Normalize();
 			rb.linearVelocity = new Vector3(direction.x * currentSpeed, rb.linearVelocity.y, direction.z * currentSpeed);
 		}
-
-		public void Shoot()
-		{
-			//Physics.Raycast()
-		}
 	}
 }

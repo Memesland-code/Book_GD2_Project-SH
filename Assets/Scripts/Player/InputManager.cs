@@ -9,12 +9,14 @@ namespace Player
 		private static readonly int IsCrouched = Animator.StringToHash("IsCrouched");
 
 		private PlayerController playerController;
+		private PlayerWeapon playerWeapon;
 		private PlayerControls inputActions;
 
 		private void Awake()
 		{
 			playerController = GetComponent<PlayerController>();
 			inputActions = new PlayerControls();
+			playerWeapon = GetComponent<PlayerWeapon>();
 		}
 
 		private void OnEnable()
@@ -45,6 +47,9 @@ namespace Player
 			
 			//? Shoot
 			inputActions.Player.Shoot.performed += Shoot;
+			
+			//? Reload
+			inputActions.Player.Reload.performed += Reload;
 		}
 
 		private void OnDisable()
@@ -116,8 +121,14 @@ namespace Player
 		public void Shoot(InputAction.CallbackContext context)
 		{
 			if (isAiming)
-				playerController.Shoot();
-			
+				playerWeapon.Shoot();
+		}
+
+
+
+		public void Reload(InputAction.CallbackContext context)
+		{
+			playerWeapon.Reload();
 		}
 	}
 }

@@ -23,7 +23,7 @@ namespace Player
 		[SerializeField] private float aimingFOV;
 		[SerializeField] private float aimTransitionSpeed;
 		
-		public CinemachineCamera cam;
+		[HideInInspector] public CinemachineCamera cam;
 		private float xRotation;
 
 		private void Awake()
