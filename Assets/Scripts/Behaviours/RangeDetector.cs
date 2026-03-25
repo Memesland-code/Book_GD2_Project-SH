@@ -11,7 +11,6 @@ namespace Behaviours
 		[SerializeField] private float detectionAngle = 45f;
 		
 		[Header("Debug and offset parameters")]
-		[SerializeField] private float playerYOffset = 1.4f;
 		[SerializeField] private float thisYOffset = 1.4f;
 		[SerializeField] private bool showDebugVisuals = true;
 
@@ -64,18 +63,9 @@ namespace Behaviours
 			}
 			
 			RaycastHit hit;
-			Vector3 viewPoint;
 			
-			if (target.CompareTag("Player"))
-			{
-				viewPoint = target.transform.position + new Vector3(0, playerYOffset, 0);
-			}
-			else
-			{
-				viewPoint = target.transform.position;
-			}
-			
-			if (Physics.Raycast(transform.position + new Vector3(0, thisYOffset, 0), (viewPoint - transform.position), out hit, Mathf.Infinity))
+			Debug.DrawRay(transform.position + new Vector3(0, thisYOffset, 0), (target.transform.position - transform.position), Color.aquamarine, 0.1f);
+			if (Physics.Raycast(transform.position + new Vector3(0, thisYOffset, 0), (target.transform.position - transform.position), out hit, Mathf.Infinity))
 			{
 				if (hit.transform.CompareTag(target.tag))
 				{
