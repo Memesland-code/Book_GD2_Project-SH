@@ -529,18 +529,18 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: Ch10_nonPBR(Clone)
+    - name: ZombieClassic(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Ch10
-      parentName: Ch10_nonPBR(Clone)
+      parentName: ZombieClassic(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig5:Hips
-      parentName: Ch10_nonPBR(Clone)
+      parentName: ZombieClassic(Clone)
       position: {x: -0.0000059549347, y: 1.0549831, z: 0.005106561}
       rotation: {x: 0.00000005188363, y: -0.0000019286595, z: 0.00006156334, w: 1}
       scale: {x: 1, y: 1, z: 1}

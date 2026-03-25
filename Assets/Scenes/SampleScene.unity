@@ -1269,8 +1269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ab762d5b3a25c24aa0c5f21049d5ee0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  Player: {fileID: 0}
-  UiCanvas: {fileID: 0}
+  player: {fileID: 0}
+  uiCanvas: {fileID: 0}
   weaponUi: {fileID: 0}
 --- !u!1 &1042800149
 GameObject:
