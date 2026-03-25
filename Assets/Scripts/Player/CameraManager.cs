@@ -53,28 +53,14 @@ namespace Player
 
 		public void SetCameraPosition(bool isCrouched, Vector3 targetCameraPosition, float crouchTransitionSpeed)
 		{
-			if (isCrouched)
-			{
-				cam.Lens.NearClipPlane = crouchingNearClippingFrame;
-			}
-			else
-			{
-				cam.Lens.NearClipPlane = standingNearClippingFrame;
-			}
-			
+			cam.Lens.NearClipPlane = isCrouched ? crouchingNearClippingFrame : standingNearClippingFrame;
+
 			cameraPos.transform.localPosition = Vector3.Lerp(cameraPos.localPosition, targetCameraPosition, crouchTransitionSpeed * Time.deltaTime);
 		}
 
 		public void SetAiming(bool aim)
 		{
-			if (aim)
-			{
-				cam.Lens.FieldOfView = Mathf.Lerp(cam.Lens.FieldOfView, aimingFOV, aimTransitionSpeed * Time.deltaTime);
-			}
-			else
-			{
-				cam.Lens.FieldOfView = Mathf.Lerp(cam.Lens.FieldOfView, baseFOV, aimTransitionSpeed * Time.deltaTime);
-			}
+			cam.Lens.FieldOfView = Mathf.Lerp(cam.Lens.FieldOfView, aim ? aimingFOV : baseFOV, aimTransitionSpeed * Time.deltaTime);
 		}
 	}
 }

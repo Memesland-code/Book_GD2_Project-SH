@@ -1,12 +1,15 @@
 using TMPro;
 using UnityEngine;
 
-public class WeaponUI : MonoBehaviour
+namespace UI
 {
-	[SerializeField] private TextMeshProUGUI ammoText;
-
-	public void SetAmmoText(int magazineAmmo, int inventoryAmmo)
+	public class WeaponUI : MonoBehaviour
 	{
-		ammoText.text = magazineAmmo + "/" + inventoryAmmo;
+		[SerializeField] private TextMeshProUGUI ammoText;
+
+		public void SetAmmoText(int magazineAmmo, int inventoryAmmo)
+		{
+			ammoText.text = magazineAmmo + "/" + inventoryAmmo;
+		}
 	}
 }

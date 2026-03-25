@@ -1,12 +1,12 @@
-using System;
+using UI;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance;
 
-	[HideInInspector] public GameObject Player;
-	[HideInInspector] public GameObject UiCanvas;
+	[HideInInspector] public GameObject player;
+	[HideInInspector] public GameObject uiCanvas;
 
 	[HideInInspector] public WeaponUI weaponUi;
 
@@ -30,14 +30,14 @@ public class GameManager : MonoBehaviour
 
 	private void ReloadReferences()
 	{
-		if (Player == null)
-			Player = GameObject.FindGameObjectWithTag("Player");
+		if (player == null)
+			player = GameObject.FindGameObjectWithTag("Player");
 	    
-		if (UiCanvas == null)
-			UiCanvas = GameObject.FindGameObjectWithTag("MainUI");
+		if (uiCanvas == null)
+			uiCanvas = GameObject.FindGameObjectWithTag("MainUI");
 
-		if (UiCanvas != null)
-			weaponUi = UiCanvas.GetComponent<WeaponUI>();
+		if (uiCanvas != null)
+			weaponUi = uiCanvas.GetComponent<WeaponUI>();
 		else
 			Debug.LogError("UiCanvas not found");
 	}

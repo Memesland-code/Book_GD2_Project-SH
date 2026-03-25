@@ -28,9 +28,9 @@ namespace Player
 		[SerializeField] private float backwardsMoveSpeedMultiplier;
 		[SerializeField] private float aimMoveSpeedMultiplier;
 		[Space(10)]
-		[SerializeField] private GameObject CharBody;
-		[SerializeField] private GameObject CharHoody;
-		[SerializeField] private GameObject CharPants;
+		[SerializeField] private GameObject charBody;
+		[SerializeField] private GameObject charHoody;
+		[SerializeField] private GameObject charPants;
 		
 		private Rigidbody rb;
 		private Animator anim;
@@ -70,16 +70,16 @@ namespace Player
 			if (input.isAiming)
 			{
 				arms.SetActive(true);
-				CharBody.SetActive(false);
-				CharHoody.SetActive(false);
-				CharPants.SetActive(false);
+				charBody.SetActive(false);
+				charHoody.SetActive(false);
+				charPants.SetActive(false);
 			}
 			else
 			{
 				arms.SetActive(false);
-				CharBody.SetActive(true);
-				CharHoody.SetActive(true);
-				CharPants.SetActive(true);
+				charBody.SetActive(true);
+				charHoody.SetActive(true);
+				charPants.SetActive(true);
 			}
 		}
 

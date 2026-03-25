@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,13 +7,11 @@ namespace Player
 	{
 		private static readonly int IsCrouched = Animator.StringToHash("IsCrouched");
 
-		private PlayerController playerController;
 		private PlayerWeapon playerWeapon;
 		private PlayerControls inputActions;
 
 		private void Awake()
 		{
-			playerController = GetComponent<PlayerController>();
 			inputActions = new PlayerControls();
 			playerWeapon = GetComponent<PlayerWeapon>();
 		}
