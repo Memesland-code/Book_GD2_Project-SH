@@ -28,9 +28,17 @@ namespace Player
 		private bool lastRayHit;
 
 
+		private void Start()
+		{
+			UpdateUiAmmoInfo();
+		}
+
+
 		public void PickupAmmo(int ammoAmount)
 		{
 			currentInventoryAmmo += ammoAmount;
+			
+			UpdateUiAmmoInfo();
 		}
 		
 		
@@ -50,14 +58,23 @@ namespace Player
 				currentMagazineAmmo += currentInventoryAmmo;
 				currentInventoryAmmo = 0;
 			}
+			
+			UpdateUiAmmoInfo();
 		}
 		
 		
 		public void Shoot()
 		{
+			if (currentMagazineAmmo <= 0)
+			{
+				// Play empty magazine sound?
+				return;
+			}
+			
 			if (Time.time >= nextFireTime)
 			{
 				ShootRaycast();
+				UpdateUiAmmoInfo();
 				nextFireTime = Time.time + fireCooldown;
 			}
 		}
@@ -89,6 +106,11 @@ namespace Player
 			currentMagazineAmmo--;
 		}
 
+
+		private void UpdateUiAmmoInfo()
+		{
+			GameManager.Instance.GetWeaponUi().SetAmmoText(currentMagazineAmmo, currentInventoryAmmo);
+		}
 
 		private void OnDrawGizmos()
 		{

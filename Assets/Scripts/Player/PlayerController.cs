@@ -107,7 +107,7 @@ namespace Player
 				anim.SetFloat(MoveY, input.moveInput.y);
 			}
 
-			if (input.moveInput.x < 0)
+			if (input.moveInput.y < 0)
 			{
 				currentSpeed /= backwardsMoveSpeedMultiplier;
 			}
