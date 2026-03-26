@@ -4108,12 +4108,21 @@ PrefabInstance:
         Assembly-CSharp]]'
       objectReference: {fileID: 0}
     - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: 'managedReferences[6945941009550016617]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[System.Boolean,
+        mscorlib]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: managedReferences[6945941009550016614].Name
       value: GetInvestigatePosition
       objectReference: {fileID: 0}
     - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: managedReferences[6945941009550016617].Name
+      value: IsStatic
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_BlackboardVariableOverridesList.Array.size
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: managedReferences[6945941007065153748].m_Value
@@ -4124,8 +4133,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1078095697}
     - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: managedReferences[6945941009550016617].m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: 'm_BlackboardVariableOverridesList.Array.data[8]'
       value: 6945941009550016614
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[9]'
+      value: 6945941009550016617
       objectReference: {fileID: 0}
     - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: managedReferences[6945941009550016614].GUID.m_Value0
@@ -4134,6 +4151,14 @@ PrefabInstance:
     - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: managedReferences[6945941009550016614].GUID.m_Value1
       value: 5439619881588663497
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: managedReferences[6945941009550016617].GUID.m_Value0
+      value: 17284463004590893453
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: managedReferences[6945941009550016617].GUID.m_Value1
+      value: 17791803666480550480
       objectReference: {fileID: 0}
     - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: 'managedReferences[6945941007065153752].m_Value.Array.data[0]'
