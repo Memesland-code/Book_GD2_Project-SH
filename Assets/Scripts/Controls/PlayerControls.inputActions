@@ -77,6 +77,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "[DEBUG] Revive",
+                    "type": "Button",
+                    "id": "22fcf7c2-84fe-43f2-87f5-8ddff9ec0e8b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -429,6 +438,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5aecaead-ebb5-4c44-9851-5ddedf789d31",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "[DEBUG] Revive",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -1,12 +1,15 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Player
 {
-	public class PlayerController : MonoBehaviour
+	public class PlayerController : MonoBehaviour, IDamageable
 	{
 		private static readonly int MoveX = Animator.StringToHash("MoveX");
 		private static readonly int MoveY = Animator.StringToHash("MoveY");
 		private static readonly int IsCrouched = Animator.StringToHash("IsCrouched");
+		private static readonly int Death = Animator.StringToHash("Death");
+		private static readonly int RevivePlayer = Animator.StringToHash("RevivePlayer");
 
 		private InputManager input;
 	
@@ -23,6 +26,12 @@ namespace Player
 		private float standHeight;
 		private Vector3 standCenter;
 		
+		[Header("Life system")]
+		[SerializeField] private float maxHealth = 100;
+		private float currentHealth;
+		[SerializeField] private float damageCooldown;
+		private float nextDamageAcceptTime;
+		
 		[Header("Shooting system")]
 		[SerializeField] private GameObject arms;
 		[SerializeField] private float backwardsMoveSpeedMultiplier;
@@ -36,7 +45,7 @@ namespace Player
 		[SerializeField] private GameObject charPants;
 		
 		private Rigidbody rb;
-		private Animator anim;
+		private Animator animator;
 		private CapsuleCollider playerCollider;
 		private CameraManager cameraManager;
 
@@ -44,14 +53,18 @@ namespace Player
 		[SerializeField] private Vector3 crouchedCameraPosition = new (0, 0.79f, 0.4f);
 		
 		private Vector3 playerVelocity;
+		private bool isDead;
+		private Transform playerSpawn;
 	
 		void Awake()
 		{
 			input = GetComponent<InputManager>();
 			rb = GetComponent<Rigidbody>();
-			anim = GetComponent<Animator>();
+			animator = GetComponent<Animator>();
 			playerCollider = GetComponent<CapsuleCollider>();
 			cameraManager = GetComponent<CameraManager>();
+			
+			currentHealth = maxHealth;
 		}
 
 		private void Start()
@@ -62,6 +75,8 @@ namespace Player
 
 			standCenter = playerCollider.center;
 			standHeight = playerCollider.height;
+			
+			playerSpawn = rb.transform;
 		}
 
 		private void Update()
@@ -100,22 +115,22 @@ namespace Player
 			{
 				input.isCrouched = false;
 				currentSpeed = sprintSpeed;
-				anim.SetBool(IsCrouched, false);
-				anim.SetFloat(MoveX, input.moveInput.x + 0.25f); // Virtually sets animator to running state
-				anim.SetFloat(MoveY, input.moveInput.y + 0.25f);
+				animator.SetBool(IsCrouched, false);
+				animator.SetFloat(MoveX, input.moveInput.x + 0.25f); // Virtually sets animator to running state
+				animator.SetFloat(MoveY, input.moveInput.y + 0.25f);
 			}
 			else if (input.isCrouched)
 			{
 				currentSpeed = crouchSpeed;
-				anim.SetBool(IsCrouched, true);
-				anim.SetFloat(MoveX, input.moveInput.x);
-				anim.SetFloat(MoveY, input.moveInput.y);
+				animator.SetBool(IsCrouched, true);
+				animator.SetFloat(MoveX, input.moveInput.x);
+				animator.SetFloat(MoveY, input.moveInput.y);
 			}
 			else
 			{
 				currentSpeed = baseSpeed;
-				anim.SetFloat(MoveX, input.moveInput.x);
-				anim.SetFloat(MoveY, input.moveInput.y);
+				animator.SetFloat(MoveX, input.moveInput.x);
+				animator.SetFloat(MoveY, input.moveInput.y);
 			}
 
 			if (input.moveInput.y < 0)
@@ -152,6 +167,50 @@ namespace Player
 			Vector3 direction = transform.right * input.moveInput.x + transform.forward * input.moveInput.y;
 			direction.Normalize();
 			rb.linearVelocity = new Vector3(direction.x * currentSpeed, rb.linearVelocity.y, direction.z * currentSpeed);
+		}
+		
+		public void TakeDamage(float damageAmount, GameObject damageSource)
+		{
+			if (isDead || Time.time <= nextDamageAcceptTime) return;
+
+			nextDamageAcceptTime = Time.time + damageCooldown;
+			
+			currentHealth -= damageAmount;
+
+			if (currentHealth <= 0)
+			{
+				animator.SetTrigger(Death);
+				StartCoroutine(PlayerDeath());
+			}
+		}
+
+		private IEnumerator PlayerDeath()
+		{
+			isDead = true;
+			GetComponent<InputManager>().enabled = false;
+			yield return new WaitForSeconds(2.5f);
+			GameManager.Instance.ManagePlayerDeath();
+			gameObject.SetActive(false);
+		}
+
+		public void Heal(float healAmount)
+		{
+			currentHealth = Mathf.Clamp(currentHealth + healAmount, 0, 100);
+		}
+
+		public void Revive()
+		{
+			rb.position = playerSpawn.position;
+			rb.rotation = playerSpawn.rotation;
+			animator.SetTrigger(RevivePlayer);
+			GetComponent<InputManager>().enabled = true;
+			currentHealth = maxHealth;
+			isDead = false;
+		}
+
+		public void RunTriggerDetection(Collider otherCollider)
+		{
+			throw new System.NotImplementedException();
 		}
 	}
 }

@@ -7,11 +7,13 @@ namespace Player
 	{
 		private static readonly int IsCrouched = Animator.StringToHash("IsCrouched");
 
+		private PlayerController playerController;
 		private PlayerWeapon playerWeapon;
 		private PlayerControls inputActions;
 
 		private void Awake()
 		{
+			playerController = GetComponent<PlayerController>();
 			inputActions = new PlayerControls();
 			playerWeapon = GetComponent<PlayerWeapon>();
 		}
@@ -47,6 +49,9 @@ namespace Player
 			
 			//? Reload
 			inputActions.Player.Reload.performed += Reload;
+			
+			//? Revive
+			inputActions.Player.DEBUGRevive.performed += Revive;
 		}
 
 		private void OnDisable()
@@ -126,6 +131,13 @@ namespace Player
 		public void Reload(InputAction.CallbackContext context)
 		{
 			playerWeapon.Reload();
+		}
+
+
+
+		public void Revive(InputAction.CallbackContext context)
+		{
+			playerController.Revive();
 		}
 	}
 }

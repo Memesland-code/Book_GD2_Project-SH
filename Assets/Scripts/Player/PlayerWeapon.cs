@@ -8,6 +8,7 @@ namespace Player
 		[SerializeField] private Transform muzzle;
 		[SerializeField] private LayerMask shootableLayers;
 		[SerializeField] private float weaponRange;
+		[SerializeField] private float weaponDamage;
 		
 		[Header("Gameplay constraints")]
 		[SerializeField] private int maxMagazineAmmo;
@@ -19,16 +20,23 @@ namespace Player
 		[SerializeField] private float fireCooldown;
 		private float nextFireTime;
 		
+		[Header("Sound System")]
+		[SerializeField] private float fireHearRadius;
+		
 		[Space(20), Header("Debug")]
 		[SerializeField] private bool showDebugRay;
 		private Vector3 lastRayOrigin;
 		private Vector3 lastRayDirection;
 		private float lastRayDistance;
 		private bool lastRayHit;
+		
+		private CameraManager cameraManager;
 
 
 		private void Start()
 		{
+			cameraManager = GetComponent<CameraManager>();
+			
 			UpdateUiAmmoInfo();
 		}
 
@@ -81,8 +89,13 @@ namespace Player
 
 		public void ShootRaycast()
 		{
-			Vector3 origin = muzzle.position;
-			Vector3 direction = muzzle.forward;
+			// Play shoot sound
+			// Play muzzle flash VFX
+			
+			SoundSystem.EmitSound(muzzle.position, fireHearRadius, gameObject);
+			
+			Vector3 origin = cameraManager.cam.transform.position;
+			Vector3 direction = cameraManager.cam.transform.forward;
 			
 			lastRayOrigin = origin;
 			lastRayDirection = direction;
@@ -95,7 +108,10 @@ namespace Player
 				lastRayDistance = hit.distance;
 				lastRayHit = true;
 				
-				//! Hit enemies
+				if (hit.collider.gameObject.TryGetComponent(out IDamageable damageable))
+				{
+					damageable.TakeDamage(weaponDamage, gameObject);
+				}
 			}
 			else
 			{
@@ -126,6 +142,9 @@ namespace Player
 				Gizmos.color = Color.darkOrange;
 				Gizmos.DrawSphere(endPoint, 0.05f);
 			}
+			
+			Gizmos.color = Color.yellowNice;
+			Gizmos.DrawWireSphere(muzzle.position, fireHearRadius);
 		}
 	}
 }

@@ -6,6 +6,7 @@ namespace Behaviours
 	{
 		[Header("Detection Settings")]
 		[SerializeField] private float detectionAngle = 45f;
+		[SerializeField] private LayerMask sightLayerMask;
 		
 		[Header("Debug and offset parameters")]
 		[SerializeField] private float thisYOffset = 1.4f;
@@ -34,7 +35,7 @@ namespace Behaviours
 			if (checkSight)
 			{
 				Debug.DrawRay(transform.position + new Vector3(0, thisYOffset, 0), (target.transform.position - transform.position), Color.aquamarine, 0.1f);
-				if (Physics.Raycast(transform.position + new Vector3(0, thisYOffset, 0), (target.transform.position - transform.position), out hit, Mathf.Infinity))
+				if (Physics.Raycast(transform.position + new Vector3(0, thisYOffset, 0), (target.transform.position - transform.position), out hit, Mathf.Infinity, sightLayerMask))
 				{
 					if (hit.transform.CompareTag(target.tag))
 					{

@@ -14,9 +14,10 @@ public partial class UpdateRangeDetectorAction : Action
     [SerializeReference] public BlackboardVariable<float> Range;
 	protected override Status OnUpdate()
 	{
+		if (RangeDetector.Value.UpdateDetector(Range) == null) return Status.Failure;
+		
 		Target.Value = RangeDetector.Value.UpdateDetector(Range);
-    
-		return Target.Value == null ? Status.Failure : Status.Success;
+		return Status.Success;
 	}
 }
 
