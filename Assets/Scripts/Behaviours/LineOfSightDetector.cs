@@ -23,34 +23,56 @@ namespace Behaviours
 			set;
 		}
 		
-		public GameObject FilterDetectedTarget(GameObject target)
+		public GameObject FilterDetectedTarget(GameObject target, bool checkSight, bool checkAngle)
 		{
 			DetectedTarget = null;
 			isInAngle = false;
 			isVisible = false;
-			
+
 			RaycastHit hit;
 			
-			Debug.DrawRay(transform.position + new Vector3(0, thisYOffset, 0), (target.transform.position - transform.position), Color.aquamarine, 0.1f);
-			if (Physics.Raycast(transform.position + new Vector3(0, thisYOffset, 0), (target.transform.position - transform.position), out hit, Mathf.Infinity))
+			if (checkSight)
 			{
-				if (hit.transform.CompareTag(target.tag))
+				Debug.DrawRay(transform.position + new Vector3(0, thisYOffset, 0), (target.transform.position - transform.position), Color.aquamarine, 0.1f);
+				if (Physics.Raycast(transform.position + new Vector3(0, thisYOffset, 0), (target.transform.position - transform.position), out hit, Mathf.Infinity))
 				{
-					isVisible = true;
+					if (hit.transform.CompareTag(target.tag))
+					{
+						isVisible = true;
+					}
 				}
 			}
+
 			
 			side1 = target.transform.position - transform.position;
 			side2 = transform.forward;
 			float angle = Vector3.SignedAngle(side1, side2, Vector3.up);
 			
-			if (angle < detectionAngle && angle > -1 * detectionAngle)
+			if (checkAngle)
 			{
-				isInAngle = true;
+				if (angle < detectionAngle && angle > -1 * detectionAngle)
+				{
+					isInAngle = true;
+				}
 			}
-			
-			if (isVisible && isInAngle)
-				DetectedTarget = target;
+
+			if (checkSight && checkAngle)
+			{
+				if (isVisible && isInAngle) DetectedTarget = target;
+				else DetectedTarget = null;
+			}
+			else if (checkSight)
+			{
+				DetectedTarget = isVisible ? target : null;
+			}
+			else if (checkAngle)
+			{
+				DetectedTarget = isInAngle ? target : null;
+			}
+			else
+			{
+				Debug.LogError("Source Error: " + this.name + " - " + this.gameObject + "\nNo checking condition ticked in LineOfSightDetector!\nThis may cause unwanted behaviours!");
+			}
 			
 			return DetectedTarget;
 		}

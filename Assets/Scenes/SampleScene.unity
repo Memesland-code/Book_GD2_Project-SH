@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 541488536}
   - component: {fileID: 541488535}
   - component: {fileID: 541488534}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -626,8 +626,8 @@ Transform:
   m_GameObject: {fileID: 541488533}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.96, y: 0.75, z: 5.62}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -2.96, y: 2.41, z: 5.62}
+  m_LocalScale: {x: 11.051, y: 4.4818, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -644,7 +644,7 @@ GameObject:
   - component: {fileID: 563785469}
   - component: {fileID: 563785468}
   - component: {fileID: 563785467}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: WorldBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1285,6 +1285,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1078095697 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1188158300633510913, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+  m_PrefabInstance: {fileID: 3752353721709401823}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180d4e66495790d4ebbc1124da6527e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GetInvestigatePosition
 --- !u!1 &1349658860 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1349730962437753449, guid: 13f345bee971b6a4c99a782568116f26, type: 3}
@@ -4092,9 +4103,38 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: 'managedReferences[6945941009550016614]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[GetInvestigatePosition,
+        Assembly-CSharp]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: managedReferences[6945941009550016614].Name
+      value: GetInvestigatePosition
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: m_BlackboardVariableOverridesList.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: managedReferences[6945941007065153748].m_Value
       value: 
       objectReference: {fileID: 8472887704813017982}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: managedReferences[6945941009550016614].m_Value
+      value: 
+      objectReference: {fileID: 1078095697}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[8]'
+      value: 6945941009550016614
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: managedReferences[6945941009550016614].GUID.m_Value0
+      value: 1446163477408853721
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: managedReferences[6945941009550016614].GUID.m_Value1
+      value: 5439619881588663497
+      objectReference: {fileID: 0}
     - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: 'managedReferences[6945941007065153752].m_Value.Array.data[0]'
       value: 
