@@ -1784,9 +1784,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: ZombieClassic
       objectReference: {fileID: 0}
-    - target: {fileID: 1930633906414445869, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
-      propertyPath: hitDamage
-      value: 100
+    - target: {fileID: 70366426104397965, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: managedReferences[6945941007065153748].m_Value

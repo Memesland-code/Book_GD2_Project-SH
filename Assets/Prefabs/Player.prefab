@@ -2536,7 +2536,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.45
   m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
@@ -2586,6 +2586,7 @@ MonoBehaviour:
   crouchCenter: {x: 0, y: 0.5, z: 0}
   crouchTransitionSpeed: 7.5
   maxHealth: 100
+  damageCooldown: 2
   arms: {fileID: 8945005699548287957}
   backwardsMoveSpeedMultiplier: 2
   aimMoveSpeedMultiplier: 2
@@ -2654,7 +2655,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   weaponRange: 100
-  weaponDamage: 10
+  weaponDamage: 100
   maxMagazineAmmo: 10
   currentInventoryAmmo: 100
   reloadTime: 0.5

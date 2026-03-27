@@ -54,7 +54,8 @@ namespace Player
 		
 		private Vector3 playerVelocity;
 		private bool isDead;
-		private Transform playerSpawn;
+		private Vector3 playerSpawnPosition;
+		private Vector3 playerSpawnRotation;
 	
 		void Awake()
 		{
@@ -64,7 +65,8 @@ namespace Player
 			playerCollider = GetComponent<CapsuleCollider>();
 			cameraManager = GetComponent<CameraManager>();
 			
-			currentHealth = maxHealth;
+			playerSpawnPosition = rb.transform.position;
+			playerSpawnRotation = rb.transform.rotation.eulerAngles;
 		}
 
 		private void Start()
@@ -72,11 +74,12 @@ namespace Player
 			arms.SetActive(false);
 			
 			currentSpeed = baseSpeed;
+			
+			currentHealth = maxHealth;
+			isDead = false;
 
 			standCenter = playerCollider.center;
 			standHeight = playerCollider.height;
-			
-			playerSpawn = rb.transform;
 		}
 
 		private void Update()
@@ -104,6 +107,8 @@ namespace Player
 			{
 				arms.SetActive(false);
 				charBody.SetActive(true);
+				charEyeLashes.SetActive(true);
+				charHair.SetActive(true);
 				charHoody.SetActive(true);
 				charPants.SetActive(true);
 			}
@@ -188,6 +193,8 @@ namespace Player
 		{
 			isDead = true;
 			GetComponent<InputManager>().enabled = false;
+			input.isAiming = false;
+			input.isCrouched = false;
 			yield return new WaitForSeconds(2.5f);
 			GameManager.Instance.ManagePlayerDeath();
 			gameObject.SetActive(false);
@@ -200,12 +207,15 @@ namespace Player
 
 		public void Revive()
 		{
-			rb.position = playerSpawn.position;
-			rb.rotation = playerSpawn.rotation;
+			rb.linearVelocity = Vector3.zero;
+			rb.angularVelocity = Vector3.zero;
+			rb.isKinematic = true;
+			transform.position = playerSpawnPosition;
+			transform.rotation = Quaternion.Euler(playerSpawnRotation);
+			rb.isKinematic = false;
+			
 			animator.SetTrigger(RevivePlayer);
 			GetComponent<InputManager>().enabled = true;
-			currentHealth = maxHealth;
-			isDead = false;
 		}
 
 		public void RunTriggerDetection(Collider otherCollider)

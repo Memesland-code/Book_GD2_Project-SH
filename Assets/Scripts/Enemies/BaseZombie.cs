@@ -4,6 +4,7 @@ using UnityEngine;
 public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 {
 	private static readonly int HitReaction = Animator.StringToHash("HitReaction");
+	private static readonly int Revive1 = Animator.StringToHash("Revive");
 	[SerializeField] private float maxHealth = 100f;
 	[SerializeField] private float hitDamage;
     private float currentHealth;
@@ -18,6 +19,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     
     private Animator animator;
     private bool isDead;
+    private Vector3 currentSoundPosition;
 
     private void Awake()
     {
@@ -54,10 +56,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 
 	    if (currentHealth <= 0)
 	    {
-		    bbCurrentState.Value = State.Dead;
-			isDead = true;   
-		    Debug.LogWarning(gameObject.name + " is Dead");
-		    Revive();
+		    Death();
 		    return;
 	    }
 	    
@@ -76,9 +75,25 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    currentHealth = Mathf.Clamp(currentHealth + healAmount, 0, 100);
     }
 
+    private void Death()
+    {
+	    GetComponent<Rigidbody>().isKinematic = true;
+	    GetComponent<Collider>().enabled = false;
+	    bbCurrentState.Value = State.Dead;
+	    isDead = true;   
+	    Debug.LogWarning(gameObject.name + " is Dead");
+    }
+
     public void Revive()
     {
 	    Debug.LogWarning("Revive executed on " + gameObject.name);
+	    animator.SetTrigger(Revive1);
+    }
+
+    public void ReviveEnded()
+    {
+	    GetComponent<Rigidbody>().isKinematic = true;
+	    GetComponent<Collider>().enabled = false;
 	    currentHealth = maxHealth;
 	    isDead = false;
 	    resetChannel.SendEventMessage();
@@ -95,9 +110,29 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 
     public void OnSoundHeard(Vector3 soundPosition, GameObject source)
     {
-	    bbInvestigatePosition.Value = soundPosition;
+	    if (currentSoundPosition == Vector3.zero)
+	    {
+		    currentSoundPosition = soundPosition;
+			bbInvestigatePosition.Value = soundPosition;
+	    }
+	    else
+	    {
+		    float currentSoundDistance = Vector3.Distance(transform.position, currentSoundPosition);
+		    float newSoundDistance = Vector3.Distance(transform.position, soundPosition);
+
+		    if (newSoundDistance < currentSoundDistance)
+		    {
+			    currentSoundPosition = soundPosition;
+			    bbInvestigatePosition.Value = soundPosition;
+		    }
+	    }
+	    
+	    bbCurrentState.Value = State.Patrol; // Workaround, forces graph blackboard to be reevaluated
 	    bbCurrentState.Value = State.Investigate;
-	    //! Deal with behavior graph to go investigate on sound position
-	    //! Check if other sound heard ==> if still investigating ==> compare distance ==> go to nearest
+    }
+
+    public void OnSoundInvestigate()
+    {
+	    currentSoundPosition = Vector3.zero;
     }
 }
