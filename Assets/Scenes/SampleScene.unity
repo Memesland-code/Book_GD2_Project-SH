@@ -380,6 +380,10 @@ PrefabInstance:
       propertyPath: data
       value: 
       objectReference: {fileID: 11400000, guid: ccee6b7aedfa7db4382875acd84e582a, type: 2}
+    - target: {fileID: 4044555483376608440, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: resolvedValue
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4774046228201961731, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.345
@@ -1493,6 +1497,7 @@ GameObject:
   - component: {fileID: 780010331}
   - component: {fileID: 780010330}
   - component: {fileID: 780010334}
+  - component: {fileID: 780010335}
   m_Layer: 5
   m_Name: MainUI
   m_TagString: MainUI
@@ -1598,6 +1603,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponUI
   ammoText: {fileID: 1712304508}
+--- !u!114 &780010335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780010329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f49d0c243e1fccd47baefda9e48e11c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KnifeUI
+  knivesNumberText: {fileID: 477720509}
+  knifeLifeSlider: {fileID: 1074782151}
 --- !u!1 &824263740
 GameObject:
   m_ObjectHideFlags: 0
@@ -1941,7 +1960,8 @@ MonoBehaviour:
   player: {fileID: 0}
   playerController: {fileID: 0}
   uiCanvas: {fileID: 0}
-  weaponUi: {fileID: 0}
+  weaponUI: {fileID: 0}
+  knifeUI: {fileID: 0}
 --- !u!1 &1042800149
 GameObject:
   m_ObjectHideFlags: 0
@@ -2310,6 +2330,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4044555483376608440, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: resolvedValue
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 4774046228201961731, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.121
@@ -2517,6 +2541,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4044555483376608440, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: resolvedValue
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 4774046228201961731, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12.501

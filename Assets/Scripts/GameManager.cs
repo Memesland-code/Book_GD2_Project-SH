@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
 	[HideInInspector] public PlayerController playerController;
 	[HideInInspector] public GameObject uiCanvas;
 
-	[HideInInspector] public WeaponUI weaponUi;
+	[HideInInspector] public WeaponUI weaponUI;
+	[HideInInspector] public KnifeUI knifeUI;
 
 	private float reviveTime;
 	private bool shouldRevive;
@@ -32,6 +33,8 @@ public class GameManager : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 	}
 
+	
+	//* ===== References and Update Logic =====
 	void Start()
     {
 	    ReloadReferences();
@@ -60,36 +63,27 @@ public class GameManager : MonoBehaviour
 			uiCanvas = GameObject.FindGameObjectWithTag("MainUI");
 
 		if (uiCanvas != null)
-			weaponUi = uiCanvas.GetComponent<WeaponUI>();
+		{
+			weaponUI = uiCanvas.GetComponent<WeaponUI>();
+			knifeUI = uiCanvas.GetComponent<KnifeUI>();
+		}
 		else
 			Debug.LogError("UiCanvas not found");
 	}
 
 
-	public WeaponUI GetWeaponUi()
-	{
-		if (weaponUi == null)
-			ReloadReferences();
-
-		return weaponUi;
-	}
-
 	
-	
+	//* ===== Out scope scripts management =====
 	public void ManagePlayerDeath()
 	{
 		reviveTime = Time.time + 3;
 		shouldRevive = true;
 	}
-
-	
 	
 	public (float, int) PollPlayerHealthAndAmmo()
 	{
 		return playerController.GetPotentialHealthAndAmmo();
 	}
-	
-	
 	
 	public ItemInstance SelectLoot(List<LootTier> lootTiers)
 	{
@@ -142,5 +136,24 @@ public class GameManager : MonoBehaviour
 			? Random.Range(entry.valueRange.x, entry.valueRange.y)
 			: 1
 		};
+	}
+	
+	
+	
+	//* ===== UI Management =====
+	public WeaponUI GetWeaponUi()
+	{
+		if (weaponUI == null)
+			ReloadReferences();
+
+		return weaponUI;
+	}
+
+	public KnifeUI GetKnifeUI()
+	{
+		if (knifeUI == null)
+			ReloadReferences();
+
+		return knifeUI;
 	}
 }

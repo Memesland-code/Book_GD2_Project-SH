@@ -114,7 +114,7 @@ namespace Player
 			standCenter = playerCollider.center;
 			standHeight = playerCollider.height;
 			
-			RefreshKnifeVisual();
+			RefreshKnifeVisuals();
 		}
 
 		//* ===== Update Logic =====
@@ -366,17 +366,20 @@ namespace Player
 			knife.OnBroken += () =>
 			{
 				knives.Remove(knife);
-				RefreshKnifeVisual();
+				RefreshKnifeVisuals();
 			};
 			
 			knives.Add(knife);
-			RefreshKnifeVisual();
+			RefreshKnifeVisuals();
 			
 		}
 		
-		private void RefreshKnifeVisual()
+		private void RefreshKnifeVisuals()
 		{
-			if (knives.Count > 0)
+			KnifeUI knifeUI = GameManager.Instance.GetKnifeUI();
+			knifeUI.RefreshKnivesUI(knives.Count, currentKnife?.Durability ?? 0);
+			
+			if (knives.Count > 0 && currentKnife != null)
 			{
 				attackPoint.GetComponent<MeshFilter>().mesh = currentKnife.Data.mesh;
 				attackPoint.GetComponent<MeshRenderer>().materials = currentKnife.Data.materials;

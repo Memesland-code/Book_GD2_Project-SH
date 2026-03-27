@@ -36,6 +36,13 @@ public class Item : MonoBehaviour, IPickable
 		gameObject.transform.rotation = Quaternion.Euler(rotationOffset);
 	}
 
+	private void Start()
+	{
+		if (resolvedValue == 0) Debug.LogError("Error on item: " + data.name + "\n" +
+		                                       "At position: " + transform.position + "\n" +
+		                                       "Item resolved value is " + resolvedValue);
+	}
+
 	public void OnPickUp(PlayerController playerController)
 	{
 		switch (data.type)
