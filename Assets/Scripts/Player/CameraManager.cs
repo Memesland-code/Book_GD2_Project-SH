@@ -58,9 +58,12 @@ namespace Player
 			cameraPos.transform.localPosition = Vector3.Lerp(cameraPos.localPosition, targetCameraPosition, crouchTransitionSpeed * Time.deltaTime);
 		}
 
-		public void SetAiming(bool aim)
+		public void SetCameraFOV(bool aim, bool dead)
 		{
-			cam.Lens.FieldOfView = Mathf.Lerp(cam.Lens.FieldOfView, aim ? aimingFOV : baseFOV, aimTransitionSpeed * Time.deltaTime);
+			if (dead)
+				cam.Lens.FieldOfView = Mathf.Lerp(cam.Lens.FieldOfView, 120, aimTransitionSpeed * Time.deltaTime);
+			else
+				cam.Lens.FieldOfView = Mathf.Lerp(cam.Lens.FieldOfView, aim ? aimingFOV : baseFOV, aimTransitionSpeed * Time.deltaTime);
 		}
 	}
 }

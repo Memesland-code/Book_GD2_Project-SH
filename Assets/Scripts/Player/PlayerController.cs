@@ -16,8 +16,6 @@ namespace Player
 		private static readonly int RevivePlayer = Animator.StringToHash("RevivePlayer");
 		private static readonly int Stab = Animator.StringToHash("Stab");
 		private static readonly int Punch = Animator.StringToHash("Punch");
-
-		private InputManager input;
 	
 		[Header("Movement")]
 		[SerializeField] private float baseSpeed;
@@ -60,19 +58,22 @@ namespace Player
 		[Header("Inventory System")]
 		[SerializeField] private int healPackNumber;
 		[SerializeField] private float healPackHealingPoint;
+		public List<HealthPackInstance> healthPacks = new List<HealthPackInstance>();
+		
 		public List<KnifeInstance> knives = new List<KnifeInstance>();
-		public KnifeInstance currentKnife => knives.LastOrDefault(k => k.isUsable);
+		public KnifeInstance currentKnife => knives.LastOrDefault(k => k.IsUsable);
 		
 		[Header("Interaction System")]
 		[SerializeField] private float interactDistance;
 		[SerializeField] private float interactSphereRadius;
 		[SerializeField] private LayerMask pickableLayer;
 		
+		private InputManager input;
 		private Rigidbody rb;
 		private Animator animator;
 		private CapsuleCollider playerCollider;
 		private CameraManager cameraManager;
-		private PlayerWeapon playerWeapon;
+		public PlayerWeapon playerWeapon;
 
 		[SerializeField] private Vector3 standCameraPosition = new (0, 1.65f, 0.15f);
 		[SerializeField] private Vector3 crouchedCameraPosition = new (0, 0.79f, 0.4f);
@@ -116,13 +117,13 @@ namespace Player
 			RefreshKnifeVisual();
 		}
 
-		// ===== Update Logic =====
+		//* ===== Update Logic =====
 		private void Update()
 		{
 			UpdateMoveStatus();
 			UpdatePlayerColliderAndCam();
 			
-			cameraManager.SetAiming(input.isAiming);
+			cameraManager.SetCameraFOV(input.isAiming, isDead);
 			if (input.isAiming)
 			{
 				arms.SetActive(true);
@@ -211,7 +212,7 @@ namespace Player
 		
 		
 		
-		// ===== IDamageable Systems =====
+		//* ===== IDamageable Systems =====
 		public void TakeDamage(float damageAmount, GameObject damageSource)
 		{
 			if (isDead || Time.time <= nextDamageAcceptTime) return;
@@ -248,6 +249,8 @@ namespace Player
 		
 		public void Revive()
 		{
+			Start();
+			
 			rb.linearVelocity = Vector3.zero;
 			rb.angularVelocity = Vector3.zero;
 			rb.isKinematic = true;
@@ -261,7 +264,7 @@ namespace Player
 		
 		
 		
-		// ===== Attack system =====
+		//* ===== Attack system =====
 		// Attack when input detected
 		public void PerformAttack()
 		{
@@ -318,7 +321,7 @@ namespace Player
 		
 		
 		
-		// ===== Interactions and inventory =====
+		//* ===== Interactions and inventory =====
 		public void Interact()
 		{
 			Ray ray = new Ray(cameraManager.cam.transform.position, cameraManager.cam.transform.forward);
@@ -357,10 +360,10 @@ namespace Player
 
 		public void AddKnife(ItemData data, float durability)
 		{
-			var knife = new KnifeInstance { data = data, durability = durability };
+			var knife = new KnifeInstance { Data = data, Durability = durability };
 
 			// Create instance and set break event to execute the remove knife from inventory
-			knife.onBroken += () =>
+			knife.OnBroken += () =>
 			{
 				knives.Remove(knife);
 				RefreshKnifeVisual();
@@ -375,25 +378,35 @@ namespace Player
 		{
 			if (knives.Count > 0)
 			{
-				attackPoint.GetComponent<MeshFilter>().mesh = currentKnife.data.mesh;
-				attackPoint.GetComponent<MeshRenderer>().materials = currentKnife.data.materials;
+				attackPoint.GetComponent<MeshFilter>().mesh = currentKnife.Data.mesh;
+				attackPoint.GetComponent<MeshRenderer>().materials = currentKnife.Data.materials;
 			}
 			else
 			{
 				attackPoint.GetComponent<MeshFilter>().mesh = null;
 			}
 		}
-		
-		
-		
-		public void UseHeal()
+
+
+
+		public void AddHealthPack(ItemData data, float healAmount)
 		{
-			
+			var pack = new HealthPackInstance { Data = data, HealAmount = healAmount };
+
+			pack.OnUsed += () => healthPacks.Remove(pack);
+			healthPacks.Add(pack);
+		}
+
+		public void UseHealthPack()
+		{
+			var pack = healthPacks.FirstOrDefault();
+			if (pack != null)
+				pack.Use(this);
 		}
 
 		
 		
-		// ===== Other =====
+		//* ===== Other =====
 		public (float, int) GetPotentialHealthAndAmmo()
 		{
 			return (currentHealth + healPackNumber * healPackHealingPoint, playerWeapon.GetTotalAmmo());
@@ -401,7 +414,7 @@ namespace Player
 		
 		
 		
-		// ===== Debug =====
+		//* ===== Debug =====
 		private void OnDrawGizmos()
 		{
 			if (!showDebugGizmos) return;

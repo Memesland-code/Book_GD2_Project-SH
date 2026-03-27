@@ -39,7 +39,7 @@ MonoBehaviour:
       valueRange: {x: 6, y: 10}
     - itemData: {fileID: 11400000, guid: ccee6b7aedfa7db4382875acd84e582a, type: 2}
       weight: 1
-      valueRange: {x: 0, y: 0}
+      valueRange: {x: 5, y: 5}
   - name: In Really Good Condition
     healthThreshold: 80
     ammoThreshold: 20
@@ -52,7 +52,7 @@ MonoBehaviour:
       valueRange: {x: 6, y: 8}
     - itemData: {fileID: 11400000, guid: ccee6b7aedfa7db4382875acd84e582a, type: 2}
       weight: 1
-      valueRange: {x: 0, y: 0}
+      valueRange: {x: 4, y: 5}
   - name: Excellent Condition
     healthThreshold: 100
     ammoThreshold: 30
@@ -65,4 +65,4 @@ MonoBehaviour:
       valueRange: {x: 4, y: 6}
     - itemData: {fileID: 11400000, guid: ccee6b7aedfa7db4382875acd84e582a, type: 2}
       weight: 3
-      valueRange: {x: 0, y: 0}
+      valueRange: {x: 3, y: 5}

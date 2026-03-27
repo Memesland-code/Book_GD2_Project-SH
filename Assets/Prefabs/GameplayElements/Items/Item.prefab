@@ -155,4 +155,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item
   data: {fileID: 11400000, guid: d4df8c1647184a64aaab97fa017ce6ac, type: 2}
+  resolvedValue: 0
   rotationOffset: {x: -90, y: 0, z: 0}

@@ -2,15 +2,15 @@ using System;
 
 public class KnifeInstance
 {
-	public ItemData data;
-	public float durability = 4;
-	public Action onBroken;
+	public ItemData Data;
+	public float Durability = 4;
+	public Action OnBroken;
 
-	public bool isUsable => durability > 0;
+	public bool IsUsable => Durability > 0;
 	
 	public void Use()
 	{
-		durability--;
-		if (!isUsable) onBroken?.Invoke(); // Call inventory to be removed when broken
+		Durability--;
+		if (!IsUsable) OnBroken?.Invoke(); // Call inventory to be removed when broken
 	}
 }

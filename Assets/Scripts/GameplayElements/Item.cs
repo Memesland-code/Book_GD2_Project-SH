@@ -6,7 +6,7 @@ using UnityEngine;
 public class Item : MonoBehaviour, IPickable
 {
 	[SerializeField] private ItemData data;
-	private float resolvedValue;
+	[SerializeField] private float resolvedValue;
 	
 	[SerializeField] private Vector3 rotationOffset;
 	private MeshFilter meshFilter;
@@ -41,15 +41,15 @@ public class Item : MonoBehaviour, IPickable
 		switch (data.type)
 		{
 			case ItemType.HealPack:
-				//TODO add heal pack
+				playerController.AddHealthPack(data, Mathf.RoundToInt(resolvedValue));
 				break;
 			
 			case ItemType.AmmoBox:
-				//TODO add ammo box
+				playerController.playerWeapon.PickupAmmo(Mathf.RoundToInt(resolvedValue));
 				break;
 			
 			case ItemType.MakeshiftKnife:
-				playerController.AddKnife(data, 100);
+				playerController.AddKnife(data, Mathf.RoundToInt(resolvedValue));
 				break;
 			
 			default:

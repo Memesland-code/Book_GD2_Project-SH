@@ -152,7 +152,7 @@ namespace Player
 		
 		private void Heal(InputAction.CallbackContext context)
 		{
-			playerController.UseHeal();
+			playerController.UseHealthPack();
 		}
 	}
 }

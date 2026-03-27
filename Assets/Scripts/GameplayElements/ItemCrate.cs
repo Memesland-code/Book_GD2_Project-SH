@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class ItemCrate : MonoBehaviour, IDamageable, ILootable
@@ -45,6 +44,8 @@ public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 		
 		// Spawn item at ground (or box position if in air)
 		GameObject spawnedItem = Instantiate(lootItem.data.prefab, transform.position, Quaternion.identity);
+		
+		spawnedItem.GetComponent<Item>().Initalize(lootItem);
 		
 		// Reset position considering halfHeight to avoid in-ground spawn
 		float itemHalfHeight = spawnedItem.GetComponent<Collider>().bounds.extents.y;
