@@ -8,5 +8,5 @@ public interface IDamageable
 
 	void Revive();
 
-	void RunTriggerDetection(Collider otherCollider);
+	void OnAttackCollision(Collider otherCollider);
 }

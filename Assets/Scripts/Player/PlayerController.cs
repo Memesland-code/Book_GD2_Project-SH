@@ -1,4 +1,8 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Player
@@ -10,6 +14,8 @@ namespace Player
 		private static readonly int IsCrouched = Animator.StringToHash("IsCrouched");
 		private static readonly int Death = Animator.StringToHash("Death");
 		private static readonly int RevivePlayer = Animator.StringToHash("RevivePlayer");
+		private static readonly int Stab = Animator.StringToHash("Stab");
+		private static readonly int Punch = Animator.StringToHash("Punch");
 
 		private InputManager input;
 	
@@ -37,6 +43,13 @@ namespace Player
 		[SerializeField] private float backwardsMoveSpeedMultiplier;
 		[SerializeField] private float aimMoveSpeedMultiplier;
 		
+		[Header("AttackSystem")]
+		[SerializeField] private GameObject attackPoint;
+		[SerializeField] float punchDamage;
+		[SerializeField] float stabDamage;
+		public bool canAttack = true;
+		private bool isPrimaryAttackWay = true; // True = punch | False = stab
+		
 		[Space(10)]
 		[SerializeField] private GameObject charBody;
 		[SerializeField] private GameObject charEyeLashes;
@@ -47,6 +60,13 @@ namespace Player
 		[Header("Inventory System")]
 		[SerializeField] private int healPackNumber;
 		[SerializeField] private float healPackHealingPoint;
+		public List<KnifeInstance> knives = new List<KnifeInstance>();
+		public KnifeInstance currentKnife => knives.LastOrDefault(k => k.isUsable);
+		
+		[Header("Interaction System")]
+		[SerializeField] private float interactDistance;
+		[SerializeField] private float interactSphereRadius;
+		[SerializeField] private LayerMask pickableLayer;
 		
 		private Rigidbody rb;
 		private Animator animator;
@@ -61,6 +81,10 @@ namespace Player
 		private bool isDead;
 		private Vector3 playerSpawnPosition;
 		private Vector3 playerSpawnRotation;
+		
+		[Space(10), Header("DEBUG")]
+		[SerializeField] bool showDebugGizmos;
+		private Vector3 interactSphereOrigin;
 	
 		void Awake()
 		{
@@ -73,6 +97,8 @@ namespace Player
 			
 			playerSpawnPosition = rb.transform.position;
 			playerSpawnRotation = rb.transform.rotation.eulerAngles;
+			
+			attackPoint.GetComponent<Collider>().enabled = false;
 		}
 
 		private void Start()
@@ -86,8 +112,11 @@ namespace Player
 
 			standCenter = playerCollider.center;
 			standHeight = playerCollider.height;
+			
+			RefreshKnifeVisual();
 		}
 
+		// ===== Update Logic =====
 		private void Update()
 		{
 			UpdateMoveStatus();
@@ -180,6 +209,9 @@ namespace Player
 			rb.linearVelocity = new Vector3(direction.x * currentSpeed, rb.linearVelocity.y, direction.z * currentSpeed);
 		}
 		
+		
+		
+		// ===== IDamageable Systems =====
 		public void TakeDamage(float damageAmount, GameObject damageSource)
 		{
 			if (isDead || Time.time <= nextDamageAcceptTime) return;
@@ -195,6 +227,7 @@ namespace Player
 			}
 		}
 
+		
 		private IEnumerator PlayerDeath()
 		{
 			isDead = true;
@@ -206,11 +239,13 @@ namespace Player
 			gameObject.SetActive(false);
 		}
 
+		
 		public void Heal(float healAmount)
 		{
 			currentHealth = Mathf.Clamp(currentHealth + healAmount, 0, 100);
 		}
 
+		
 		public void Revive()
 		{
 			rb.linearVelocity = Vector3.zero;
@@ -223,15 +258,162 @@ namespace Player
 			animator.SetTrigger(RevivePlayer);
 			GetComponent<InputManager>().enabled = true;
 		}
-
-		public void RunTriggerDetection(Collider otherCollider)
+		
+		
+		
+		// ===== Attack system =====
+		// Attack when input detected
+		public void PerformAttack()
 		{
-			throw new System.NotImplementedException();
+			if (!canAttack) return;
+
+			canAttack = false;
+			input.isCrouched = false;
+			
+			if (knives.Count > 0)
+			{
+				isPrimaryAttackWay = false;
+				animator.SetTrigger(Stab);
+			}
+			else
+			{
+				isPrimaryAttackWay = true;
+				animator.SetTrigger(Punch);
+			}
+		}
+		
+		
+		// Callback from animation: enable hit collision
+		public void EnableAttackCollider(int isStart)
+		{
+			GetComponentInChildren<HitDetectZone>().gameObject.GetComponent<BoxCollider>().enabled = isStart == 1;
+		}
+		
+		// Called from collision if triggerEnter detected
+		public void OnAttackCollision(Collider otherCollider)
+		{
+			if (otherCollider.TryGetComponent(out IDamageable damageable))
+			{
+				if (isPrimaryAttackWay)
+				{
+					damageable.TakeDamage(punchDamage, gameObject);
+				}
+				else
+				{
+					damageable.TakeDamage(stabDamage, gameObject);
+				}
+			}
 		}
 
+		public void DamageReceived()
+		{
+			if (!isPrimaryAttackWay) currentKnife.Use();
+		}
+
+		// Called on animatiion end to reset attack state
+		public void ResetAttack()
+		{
+			canAttack = true;
+		}
+		
+		
+		
+		// ===== Interactions and inventory =====
+		public void Interact()
+		{
+			Ray ray = new Ray(cameraManager.cam.transform.position, cameraManager.cam.transform.forward);
+
+			Vector3 sphereOrigin = ray.GetPoint(interactDistance);
+			interactSphereOrigin = sphereOrigin;
+			
+			if (Physics.Raycast(ray, out RaycastHit hit, interactDistance))
+			{
+				if (hit.collider.TryGetComponent(out IPickable pickable))
+				{
+					pickable.OnPickUp(this);
+					return;
+				}
+				
+				sphereOrigin = hit.point;
+				interactSphereOrigin = sphereOrigin;
+			}
+			
+			Collider[] hits = Physics.OverlapSphere(sphereOrigin, interactSphereRadius, pickableLayer);
+
+			if (hits.Length > 0)
+			{
+				Collider closest = hits
+					.OrderBy(h => Vector3.Distance(transform.position, h.transform.position))
+					.First();
+
+				if (closest.TryGetComponent(out IPickable spherePickable))
+				{
+					spherePickable.OnPickUp(this);
+				}
+			}
+		}
+
+
+
+		public void AddKnife(ItemData data, float durability)
+		{
+			var knife = new KnifeInstance { data = data, durability = durability };
+
+			// Create instance and set break event to execute the remove knife from inventory
+			knife.onBroken += () =>
+			{
+				knives.Remove(knife);
+				RefreshKnifeVisual();
+			};
+			
+			knives.Add(knife);
+			RefreshKnifeVisual();
+			
+		}
+		
+		private void RefreshKnifeVisual()
+		{
+			if (knives.Count > 0)
+			{
+				attackPoint.GetComponent<MeshFilter>().mesh = currentKnife.data.mesh;
+				attackPoint.GetComponent<MeshRenderer>().materials = currentKnife.data.materials;
+			}
+			else
+			{
+				attackPoint.GetComponent<MeshFilter>().mesh = null;
+			}
+		}
+		
+		
+		
+		public void UseHeal()
+		{
+			
+		}
+
+		
+		
+		// ===== Other =====
 		public (float, int) GetPotentialHealthAndAmmo()
 		{
 			return (currentHealth + healPackNumber * healPackHealingPoint, playerWeapon.GetTotalAmmo());
+		}
+		
+		
+		
+		// ===== Debug =====
+		private void OnDrawGizmos()
+		{
+			if (!showDebugGizmos) return;
+
+			if (Application.isPlaying)
+			{
+				Gizmos.color = Color.magenta;
+				Gizmos.DrawRay(cameraManager.cam.transform.position, cameraManager.cam.transform.forward);
+			}
+
+			Gizmos.color = Color.rebeccaPurple;
+			Gizmos.DrawWireSphere(interactSphereOrigin, interactSphereRadius);
 		}
 	}
 }

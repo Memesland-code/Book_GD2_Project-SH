@@ -1,8 +1,8 @@
-using UnityEngine;
+using Player;
 
 public interface IPickable
 {
-	void OnPickUp();
+	void OnPickUp(PlayerController playerController);
 }
 
 public enum ItemType

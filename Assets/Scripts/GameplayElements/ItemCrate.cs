@@ -28,7 +28,7 @@ public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 		throw new System.NotImplementedException();
 	}
 
-	public void RunTriggerDetection(Collider otherCollider)
+	public void OnAttackCollision(Collider otherCollider)
 	{
 		throw new System.NotImplementedException();
 	}

@@ -1,3 +1,4 @@
+using Player;
 using Unity.Behavior;
 using UnityEngine;
 
@@ -5,7 +6,11 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 {
 	private static readonly int HitReaction = Animator.StringToHash("HitReaction");
 	private static readonly int Revive1 = Animator.StringToHash("Revive");
+	
 	[SerializeField] private float maxHealth = 100f;
+	[SerializeField] private float damageCooldown;
+	private float nextDamageAcceptTime;
+	
 	[SerializeField] private float hitDamage;
     private float currentHealth;
 	    
@@ -40,9 +45,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 
     public void AttackPlayer(int isStart)
     {
-	    bool doStart = isStart == 1;
-	    
-	    GetComponentInChildren<HitDetectZone>().gameObject.GetComponent<BoxCollider>().enabled = doStart;
+	    GetComponentInChildren<HitDetectZone>().gameObject.GetComponent<BoxCollider>().enabled = isStart == 1;
     }
 
     
@@ -50,7 +53,12 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     // ===== IDamageable Related =====
     public void TakeDamage(float damageAmount, GameObject damageSource)
     {
-	    if (isDead) return;
+	    if (isDead || Time.time <= nextDamageAcceptTime) return;
+	    
+	    nextDamageAcceptTime = Time.time + damageCooldown;
+
+	    if (damageSource.TryGetComponent(out PlayerController player))
+		    player.DamageReceived();
 	    
 	    currentHealth -= damageAmount;
 
@@ -100,7 +108,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    bbCurrentState.Value = State.Patrol;
     }
 
-    public void RunTriggerDetection(Collider otherCollider)
+    public void OnAttackCollision(Collider otherCollider)
     {
 	    if (otherCollider.CompareTag("Player"))
 	    {

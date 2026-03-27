@@ -1,3 +1,5 @@
+using System;
+using Player;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -34,9 +36,25 @@ public class Item : MonoBehaviour, IPickable
 		gameObject.transform.rotation = Quaternion.Euler(rotationOffset);
 	}
 
-	public void OnPickUp()
+	public void OnPickUp(PlayerController playerController)
 	{
-		print("Picked up item");
+		switch (data.type)
+		{
+			case ItemType.HealPack:
+				//TODO add heal pack
+				break;
+			
+			case ItemType.AmmoBox:
+				//TODO add ammo box
+				break;
+			
+			case ItemType.MakeshiftKnife:
+				playerController.AddKnife(data, 100);
+				break;
+			
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
 		Destroy(gameObject);
 	}
 }

@@ -30,11 +30,13 @@ namespace Player
 		private float lastRayDistance;
 		private bool lastRayHit;
 		
+		private PlayerController playerController;
 		private CameraManager cameraManager;
 
 
 		private void Start()
 		{
+			playerController = GetComponent<PlayerController>();
 			cameraManager = GetComponent<CameraManager>();
 			
 			UpdateUiAmmoInfo();
@@ -51,6 +53,8 @@ namespace Player
 		
 		public void Reload()
 		{
+			if (!playerController.canAttack) return;
+			
 			int ammoToReload = maxMagazineAmmo - currentMagazineAmmo;
 
 			if (ammoToReload <= 0) return;
@@ -72,6 +76,8 @@ namespace Player
 		
 		public void Shoot()
 		{
+			if (!playerController.canAttack) return;
+			
 			if (currentMagazineAmmo <= 0)
 			{
 				// Play empty magazine sound?

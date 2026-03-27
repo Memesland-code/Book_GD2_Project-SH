@@ -38,21 +38,26 @@ namespace Player
 			inputActions.Player.Crouch.performed += Crouch;
 			
 			//? Interact
-			inputActions.Player.Interact.performed += Interact;
+			inputActions.Player.Interact.performed += InteractInput;
 			
 			//? Aim
 			inputActions.Player.Aim.performed += Aim;
 			inputActions.Player.Aim.canceled += Aim;
 			
-			//? Shoot
-			inputActions.Player.Shoot.performed += Shoot;
+			//? Attack
+			inputActions.Player.Attack.performed += Attack;
 			
 			//? Reload
 			inputActions.Player.Reload.performed += Reload;
 			
 			//? Revive
 			inputActions.Player.DEBUGRevive.performed += Revive;
+			
+			//? Healing
+			inputActions.Player.Heal.performed += Heal;
 		}
+
+		
 
 		private void OnDisable()
 		{
@@ -92,7 +97,7 @@ namespace Player
 		
 		public void Crouch(InputAction.CallbackContext context)
 		{
-			if (context.action.WasPressedThisFrame())
+			if (context.action.WasPressedThisFrame() && playerController.canAttack)
 			{
 				isCrouched = !isCrouched;
 				GetComponent<Animator>().SetBool(IsCrouched, isCrouched);
@@ -101,12 +106,12 @@ namespace Player
 
 
 
-		public bool hasInteracted;
-		
-		public void Interact(InputAction.CallbackContext context)
+		public void InteractInput(InputAction.CallbackContext context)
 		{
-			hasInteracted = context.action.WasPressedThisFrame();
-			print(hasInteracted);
+			if (context.action.WasPressedThisFrame())
+			{
+				playerController.Interact();
+			}
 		}
 
 
@@ -115,15 +120,18 @@ namespace Player
 		
 		public void Aim(InputAction.CallbackContext context)
 		{
+			if (!playerController.canAttack) return;
 			isAiming = context.action.IsPressed();
 		}
 
 
 		
-		public void Shoot(InputAction.CallbackContext context)
+		public void Attack(InputAction.CallbackContext context)
 		{
 			if (isAiming)
 				playerWeapon.Shoot();
+			else
+				playerController.PerformAttack();
 		}
 
 
@@ -138,6 +146,13 @@ namespace Player
 		public void Revive(InputAction.CallbackContext context)
 		{
 			playerController.Revive();
+		}
+		
+		
+		
+		private void Heal(InputAction.CallbackContext context)
+		{
+			playerController.UseHeal();
 		}
 	}
 }
