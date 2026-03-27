@@ -73,7 +73,7 @@ namespace Player
 		private Animator animator;
 		private CapsuleCollider playerCollider;
 		private CameraManager cameraManager;
-		public PlayerWeapon playerWeapon;
+		[HideInInspector] public PlayerWeapon playerWeapon;
 
 		[SerializeField] private Vector3 standCameraPosition = new (0, 1.65f, 0.15f);
 		[SerializeField] private Vector3 crouchedCameraPosition = new (0, 0.79f, 0.4f);
@@ -176,12 +176,12 @@ namespace Player
 
 			if (input.moveInput.y < 0)
 			{
-				currentSpeed /= backwardsMoveSpeedMultiplier;
+				currentSpeed *= backwardsMoveSpeedMultiplier;
 			}
 
 			if (input.isAiming)
 			{
-				currentSpeed /= aimMoveSpeedMultiplier;
+				currentSpeed *= aimMoveSpeedMultiplier;
 			}
 		}
 
@@ -220,6 +220,8 @@ namespace Player
 			nextDamageAcceptTime = Time.time + damageCooldown;
 			
 			currentHealth -= damageAmount;
+			
+			GameManager.Instance.playerLifeUI.SetPlayerLifePercent(currentHealth/maxHealth);
 
 			if (currentHealth <= 0)
 			{
@@ -235,6 +237,7 @@ namespace Player
 			GetComponent<InputManager>().enabled = false;
 			input.isAiming = false;
 			input.isCrouched = false;
+			animator.SetBool(IsCrouched, false);
 			yield return new WaitForSeconds(2.5f);
 			GameManager.Instance.ManagePlayerDeath();
 			gameObject.SetActive(false);
@@ -244,6 +247,7 @@ namespace Player
 		public void Heal(float healAmount)
 		{
 			currentHealth = Mathf.Clamp(currentHealth + healAmount, 0, 100);
+			GameManager.Instance.playerLifeUI.SetPlayerLifePercent(currentHealth/maxHealth);
 		}
 
 		
@@ -272,6 +276,7 @@ namespace Player
 
 			canAttack = false;
 			input.isCrouched = false;
+			animator.SetBool(IsCrouched, false);
 			
 			if (knives.Count > 0)
 			{

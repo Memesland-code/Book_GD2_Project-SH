@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
 	[HideInInspector] public WeaponUI weaponUI;
 	[HideInInspector] public KnifeUI knifeUI;
+	[HideInInspector] public PlayerLifeUI playerLifeUI;
 
 	private float reviveTime;
 	private bool shouldRevive;
@@ -66,6 +67,7 @@ public class GameManager : MonoBehaviour
 		{
 			weaponUI = uiCanvas.GetComponent<WeaponUI>();
 			knifeUI = uiCanvas.GetComponent<KnifeUI>();
+			playerLifeUI = uiCanvas.GetComponent<PlayerLifeUI>();
 		}
 		else
 			Debug.LogError("UiCanvas not found");
@@ -155,5 +157,13 @@ public class GameManager : MonoBehaviour
 			ReloadReferences();
 
 		return knifeUI;
+	}
+
+	public PlayerLifeUI GetPlayerLifeUI()
+	{
+		if (playerLifeUI == null)
+			ReloadReferences();
+		
+		return playerLifeUI;
 	}
 }
