@@ -1,6 +1,8 @@
+using System;
 using Player;
 using Unity.Behavior;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 {
@@ -16,6 +18,10 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    
     [SerializeField] private BehaviorGraphAgent behaviorAgent;
     [SerializeField] private ResetGraphValues resetChannel;
+
+    [SerializeField] private float reviveChance;
+    private float baseReviveChance;
+    [SerializeField] private float reviveChanceAddOnCollision;
     
     private BlackboardVariable<State> bbCurrentState;
     private BlackboardVariable<Vector3> bbInvestigatePosition;
@@ -26,10 +32,15 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     private bool isDead;
     private Vector3 currentSoundPosition;
 
+    private Collider deadTrigger;
+
     private void Awake()
     {
 	    currentHealth = maxHealth;
 	    animator = GetComponent<Animator>();
+	    deadTrigger = GetComponent<SphereCollider>();
+	    deadTrigger.enabled = false;
+	    baseReviveChance = reviveChance;
     }
 
     private void Start()
@@ -88,23 +99,28 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    GetComponent<Rigidbody>().isKinematic = true;
 	    GetComponent<Collider>().enabled = false;
 	    bbCurrentState.Value = State.Dead;
-	    isDead = true;   
+	    isDead = true;
+	    deadTrigger.enabled = true;
 	    Debug.LogWarning(gameObject.name + " is Dead");
     }
 
+    // Effective revive to animate zombie
     public void Revive()
     {
 	    Debug.LogWarning("Revive executed on " + gameObject.name);
-	    animator.SetTrigger(Revive1);
+	    deadTrigger.enabled = false;
+	    reviveChance = baseReviveChance;
+	    //animator.SetTrigger(Revive1);
+	    resetChannel.SendEventMessage();
     }
 
+    // Called on animation ended
     public void ReviveEnded()
     {
 	    GetComponent<Rigidbody>().isKinematic = true;
 	    GetComponent<Collider>().enabled = true;
 	    currentHealth = maxHealth;
 	    isDead = false;
-	    resetChannel.SendEventMessage();
 	    bbCurrentState.Value = State.Patrol;
     }
 
@@ -142,5 +158,23 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     public void OnSoundInvestigate()
     {
 	    currentSoundPosition = Vector3.zero;
+    }
+
+    // The more the player get close to the dead zombie, the more it will have chances to revive
+    private void OnTriggerEnter(Collider other)
+    {
+	    if (other.CompareTag("Player"))
+	    {
+		    float rolledReviveChances = Random.Range(0, 100);
+
+		    if (rolledReviveChances <= reviveChance)
+		    {
+			    Revive();
+		    }
+		    else
+		    {
+			    reviveChance += reviveChanceAddOnCollision;
+		    }
+	    }
     }
 }

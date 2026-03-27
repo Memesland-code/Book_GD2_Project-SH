@@ -4054,14 +4054,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2565491528843083657, guid: 9e3e25973c4a910448e413bb57583cbc, type: 3}
-      propertyPath: showDebugGizmos
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2565491528843083657, guid: 9e3e25973c4a910448e413bb57583cbc, type: 3}
-      propertyPath: runningSoundRadius
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 3986012819292833151, guid: 9e3e25973c4a910448e413bb57583cbc, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12.37
@@ -4105,14 +4097,6 @@ PrefabInstance:
     - target: {fileID: 4119012163809653457, guid: 9e3e25973c4a910448e413bb57583cbc, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7752760885063744993, guid: 9e3e25973c4a910448e413bb57583cbc, type: 3}
-      propertyPath: showDebugRay
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7752760885063744993, guid: 9e3e25973c4a910448e413bb57583cbc, type: 3}
-      propertyPath: fireHearRadius
-      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

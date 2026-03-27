@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7269089014645662687}
   - component: {fileID: 4719747335493160184}
+  - component: {fileID: 6489807378629294625}
   - component: {fileID: 7081609503761862942}
   - component: {fileID: 7190495904830412832}
   - component: {fileID: 7183246657094951119}
@@ -98,6 +99,27 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!135 &6489807378629294625
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70366426104397965}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 4
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!54 &7081609503761862942
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -363,6 +385,8 @@ MonoBehaviour:
   hitDamage: 5
   behaviorAgent: {fileID: 2261789745007801950}
   resetChannel: {fileID: 11400000, guid: 37d6a9adf26c2f14f9dffb207245ab19, type: 2}
+  reviveChance: 0
+  reviveChanceAddOnCollision: 100
 --- !u!1 &118905366306155723
 GameObject:
   m_ObjectHideFlags: 0
