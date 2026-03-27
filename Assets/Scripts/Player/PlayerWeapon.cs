@@ -127,6 +127,11 @@ namespace Player
 			GameManager.Instance.GetWeaponUi().SetAmmoText(currentMagazineAmmo, currentInventoryAmmo);
 		}
 
+		public int GetTotalAmmo()
+		{
+			return currentMagazineAmmo + currentInventoryAmmo;
+		}
+
 		private void OnDrawGizmos()
 		{
 			if (!showDebugRay) return;

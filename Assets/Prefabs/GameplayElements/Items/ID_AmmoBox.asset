@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efb917a59c7f18f42a282a0f4a565afe, type: 3}
+  m_Name: ID_AmmoBox
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  prefab: {fileID: 5917584093234542472, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+  internalID: 2
+  type: 1
+  itemName: Ammo Box
+  mesh: {fileID: 2627054763745052571, guid: 04246d04174c2df46acbf6e770649e35, type: 3}
+  materials:
+  - {fileID: 2100000, guid: 624841b803c636b4ca36bd4663fdb5ad, type: 2}
+  value: 0

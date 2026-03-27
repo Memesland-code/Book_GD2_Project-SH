@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efb917a59c7f18f42a282a0f4a565afe, type: 3}
+  m_Name: ID_MakeshiftKnife
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  prefab: {fileID: 5917584093234542472, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+  internalID: 3
+  type: 2
+  itemName: Makeshift Knife
+  mesh: {fileID: -8758845405027943586, guid: 9e85ecaeceeec9446956b1b85f4de55a, type: 3}
+  materials:
+  - {fileID: 2100000, guid: 67f885acd664a5f4aae0e22b9b05e6f5, type: 2}
+  - {fileID: 2100000, guid: e57d3f465a0025145986ffada9792c8e, type: 2}
+  value: 0

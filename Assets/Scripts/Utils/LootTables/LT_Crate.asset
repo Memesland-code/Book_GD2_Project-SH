@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: LT_Crate
+  m_EditorClassIdentifier: Assembly-CSharp::LootTable
+  tiers:
+  - name: Critical Health
+    healthThreshold: 20
+    ammoThreshold: 0
+    possibleLoots:
+    - itemData: {fileID: 11400000, guid: d4df8c1647184a64aaab97fa017ce6ac, type: 2}
+      weight: 1
+      valueRange: {x: 50, y: 80}
+  - name: Critical Ammo
+    healthThreshold: 0
+    ammoThreshold: 5
+    possibleLoots:
+    - itemData: {fileID: 11400000, guid: 8c54e100c5ac171459ef1a64c5051372, type: 2}
+      weight: 1
+      valueRange: {x: 8, y: 12}
+  - name: In Good Condition
+    healthThreshold: 50
+    ammoThreshold: 10
+    possibleLoots:
+    - itemData: {fileID: 11400000, guid: d4df8c1647184a64aaab97fa017ce6ac, type: 2}
+      weight: 3
+      valueRange: {x: 20, y: 50}
+    - itemData: {fileID: 11400000, guid: 8c54e100c5ac171459ef1a64c5051372, type: 2}
+      weight: 3
+      valueRange: {x: 6, y: 10}
+    - itemData: {fileID: 11400000, guid: ccee6b7aedfa7db4382875acd84e582a, type: 2}
+      weight: 1
+      valueRange: {x: 0, y: 0}
+  - name: In Really Good Condition
+    healthThreshold: 80
+    ammoThreshold: 20
+    possibleLoots:
+    - itemData: {fileID: 11400000, guid: d4df8c1647184a64aaab97fa017ce6ac, type: 2}
+      weight: 1
+      valueRange: {x: 20, y: 40}
+    - itemData: {fileID: 11400000, guid: 8c54e100c5ac171459ef1a64c5051372, type: 2}
+      weight: 1
+      valueRange: {x: 6, y: 8}
+    - itemData: {fileID: 11400000, guid: ccee6b7aedfa7db4382875acd84e582a, type: 2}
+      weight: 1
+      valueRange: {x: 0, y: 0}
+  - name: Excellent Condition
+    healthThreshold: 100
+    ammoThreshold: 30
+    possibleLoots:
+    - itemData: {fileID: 11400000, guid: d4df8c1647184a64aaab97fa017ce6ac, type: 2}
+      weight: 1
+      valueRange: {x: 10, y: 20}
+    - itemData: {fileID: 11400000, guid: 8c54e100c5ac171459ef1a64c5051372, type: 2}
+      weight: 1
+      valueRange: {x: 4, y: 6}
+    - itemData: {fileID: 11400000, guid: ccee6b7aedfa7db4382875acd84e582a, type: 2}
+      weight: 3
+      valueRange: {x: 0, y: 0}

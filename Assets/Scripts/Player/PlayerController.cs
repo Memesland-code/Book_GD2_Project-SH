@@ -44,10 +44,15 @@ namespace Player
 		[SerializeField] private GameObject charHoody;
 		[SerializeField] private GameObject charPants;
 		
+		[Header("Inventory System")]
+		[SerializeField] private int healPackNumber;
+		[SerializeField] private float healPackHealingPoint;
+		
 		private Rigidbody rb;
 		private Animator animator;
 		private CapsuleCollider playerCollider;
 		private CameraManager cameraManager;
+		private PlayerWeapon playerWeapon;
 
 		[SerializeField] private Vector3 standCameraPosition = new (0, 1.65f, 0.15f);
 		[SerializeField] private Vector3 crouchedCameraPosition = new (0, 0.79f, 0.4f);
@@ -64,6 +69,7 @@ namespace Player
 			animator = GetComponent<Animator>();
 			playerCollider = GetComponent<CapsuleCollider>();
 			cameraManager = GetComponent<CameraManager>();
+			playerWeapon = GetComponent<PlayerWeapon>();
 			
 			playerSpawnPosition = rb.transform.position;
 			playerSpawnRotation = rb.transform.rotation.eulerAngles;
@@ -221,6 +227,11 @@ namespace Player
 		public void RunTriggerDetection(Collider otherCollider)
 		{
 			throw new System.NotImplementedException();
+		}
+
+		public (float, int) GetPotentialHealthAndAmmo()
+		{
+			return (currentHealth + healPackNumber * healPackHealingPoint, playerWeapon.GetTotalAmmo());
 		}
 	}
 }

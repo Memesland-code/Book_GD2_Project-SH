@@ -93,7 +93,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     public void ReviveEnded()
     {
 	    GetComponent<Rigidbody>().isKinematic = true;
-	    GetComponent<Collider>().enabled = false;
+	    GetComponent<Collider>().enabled = true;
 	    currentHealth = maxHealth;
 	    isDead = false;
 	    resetChannel.SendEventMessage();
