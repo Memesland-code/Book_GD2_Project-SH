@@ -5,6 +5,9 @@ public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 	[SerializeField] private LootTable lootTable;
 	[SerializeField] private float breakHearRadius;
 	
+	[Header("DEBUG")]
+	[SerializeField] private bool showDebugGizmos;
+	
 	public void TakeDamage(float damageAmount, GameObject damageSource)
 	{
 		//TODO SFX break
@@ -55,6 +58,8 @@ public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 
 	private void OnDrawGizmos()
 	{
+		if (!showDebugGizmos) return;
+		
 		Gizmos.color = Color.orange;
 		Gizmos.DrawWireSphere(transform.position, breakHearRadius);
 	}

@@ -155,3 +155,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemCrate
   lootTable: {fileID: 11400000, guid: d58e4cbc02821f743adb87082824abb4, type: 2}
   breakHearRadius: 7.5
+  showDebugGizmos: 0

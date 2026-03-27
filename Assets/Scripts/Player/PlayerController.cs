@@ -21,6 +21,7 @@ namespace Player
 		[SerializeField] private float baseSpeed;
 		[SerializeField] private float sprintSpeed;
 		[SerializeField] private float crouchSpeed;
+		[SerializeField] private float runningSoundRadius;
 		private float currentSpeed;
 		
 		[Header("Crouching")]
@@ -56,9 +57,8 @@ namespace Player
 		[SerializeField] private GameObject charPants;
 		
 		[Header("Inventory System")]
-		[SerializeField] private int healPackNumber;
-		[SerializeField] private float healPackHealingPoint;
 		public List<HealthPackInstance> healthPacks = new List<HealthPackInstance>();
+		private float totalPotentialHealth;
 		
 		public List<KnifeInstance> knives = new List<KnifeInstance>();
 		public KnifeInstance currentKnife => knives.LastOrDefault(k => k.IsUsable);
@@ -115,6 +115,7 @@ namespace Player
 			standHeight = playerCollider.height;
 			
 			RefreshKnifeVisuals();
+			GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(healthPacks.Count, (int)(healthPacks.FirstOrDefault()?.HealAmount ?? 0));
 		}
 
 		//* ===== Update Logic =====
@@ -154,6 +155,7 @@ namespace Player
 		{
 			if (input.isSprinting)
 			{
+				SoundSystem.EmitSound(transform.position, runningSoundRadius, gameObject);
 				input.isCrouched = false;
 				currentSpeed = sprintSpeed;
 				animator.SetBool(IsCrouched, false);
@@ -221,7 +223,7 @@ namespace Player
 			
 			currentHealth -= damageAmount;
 			
-			GameManager.Instance.playerLifeUI.SetPlayerLifePercent(currentHealth/maxHealth);
+			GameManager.Instance.GetPlayerLifeUI().SetPlayerLifePercent(currentHealth/maxHealth);
 
 			if (currentHealth <= 0)
 			{
@@ -247,7 +249,7 @@ namespace Player
 		public void Heal(float healAmount)
 		{
 			currentHealth = Mathf.Clamp(currentHealth + healAmount, 0, 100);
-			GameManager.Instance.playerLifeUI.SetPlayerLifePercent(currentHealth/maxHealth);
+			GameManager.Instance.GetPlayerLifeUI().SetPlayerLifePercent(currentHealth/maxHealth);
 		}
 
 		
@@ -403,13 +405,22 @@ namespace Player
 
 			pack.OnUsed += () => healthPacks.Remove(pack);
 			healthPacks.Add(pack);
+			
+			var firstPack = healthPacks.FirstOrDefault();
+			
+			if (firstPack != null)
+				GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(healthPacks.Count, (int)firstPack.HealAmount);
 		}
 
 		public void UseHealthPack()
 		{
 			var pack = healthPacks.FirstOrDefault();
 			if (pack != null)
+			{
 				pack.Use(this);
+				GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(healthPacks.Count, (int)(healthPacks.FirstOrDefault()?.HealAmount ?? 0));
+			}
+
 		}
 
 		
@@ -417,7 +428,14 @@ namespace Player
 		//* ===== Other =====
 		public (float, int) GetPotentialHealthAndAmmo()
 		{
-			return (currentHealth + healPackNumber * healPackHealingPoint, playerWeapon.GetTotalAmmo());
+			totalPotentialHealth = 0;
+			
+			foreach (HealthPackInstance healthPack in healthPacks)
+			{
+				totalPotentialHealth += healthPack.HealAmount;
+			}
+			
+			return (currentHealth + totalPotentialHealth, playerWeapon.GetTotalAmmo());
 		}
 		
 		
@@ -435,6 +453,9 @@ namespace Player
 
 			Gizmos.color = Color.rebeccaPurple;
 			Gizmos.DrawWireSphere(interactSphereOrigin, interactSphereRadius);
+
+			Gizmos.color = Color.darkOrange;
+			Gizmos.DrawWireSphere(transform.position, runningSoundRadius);
 		}
 	}
 }

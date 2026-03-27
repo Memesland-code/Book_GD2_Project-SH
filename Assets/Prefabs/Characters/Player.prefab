@@ -2583,6 +2583,7 @@ MonoBehaviour:
   baseSpeed: 3
   sprintSpeed: 5
   crouchSpeed: 2
+  runningSoundRadius: 6
   crouchHeight: 1
   crouchCenter: {x: 0, y: 0.5, z: 0}
   crouchTransitionSpeed: 7.5
@@ -2600,8 +2601,6 @@ MonoBehaviour:
   charHair: {fileID: 5949037690722888875}
   charHoody: {fileID: 1771740341066877003}
   charPants: {fileID: 6096448474865404848}
-  healPackNumber: 0
-  healPackHealingPoint: 0
   interactDistance: 3
   interactSphereRadius: 0.3
   pickableLayer:
@@ -2673,7 +2672,7 @@ MonoBehaviour:
   currentInventoryAmmo: 100
   reloadTime: 0.5
   fireCooldown: 0.5
-  fireHearRadius: 10
+  fireHearRadius: 11
   showDebugRay: 1
 --- !u!95 &8468087429571766652
 Animator:
