@@ -1,4 +1,3 @@
-using System;
 using Player;
 using Unity.Behavior;
 using UnityEngine;
@@ -53,29 +52,21 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     {
 	    behaviorAgent = GetComponent<BehaviorGraphAgent>();
 	    
-	    // Check if BB reference exist and set them to our variable
+	    // Check if BB reference exists and set them to our variable
 	    if (behaviorAgent.BlackboardReference.GetVariable("EnemyBehaviourStates", out bbCurrentState)) {}
 	    if (behaviorAgent.BlackboardReference.GetVariable("InvestigatePosition", out bbInvestigatePosition)) {}
 	    if (behaviorAgent.BlackboardReference.GetVariable("Target", out bbTarget)) {}
 	    if (behaviorAgent.BlackboardReference.GetVariable("ForceChasePlayer", out bbForceChasePlayer)) {}
     }
 
-    public void AttackPlayer(int isStart)
-    {
-	    GetComponentInChildren<HitDetectZone>().gameObject.GetComponent<BoxCollider>().enabled = isStart == 1;
-    }
-
     
     
-    // ===== IDamageable Related =====
+    //* ===== IDamageable and attack Related =====
     public void TakeDamage(float damageAmount, GameObject damageSource)
     {
 	    if (isDead || Time.time <= nextDamageAcceptTime) return;
 	    
 	    nextDamageAcceptTime = Time.time + damageCooldown;
-
-	    if (damageSource.TryGetComponent(out PlayerController player))
-		    player.DamageReceivedByTarget((int)damageAmount == (int)player.stabDamage);
 	    
 	    currentHealth -= damageAmount;
 
@@ -106,9 +97,12 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 		    animator.SetBool(StaggerBlocked, true);
 		    animator.SetTrigger(HeavyHitReaction);
 		    currentHitTimes = 0;
+		    return;
 	    }
-	    else
+	    
+	    if (damageSource.TryGetComponent(out PlayerController player) && (int)damageAmount == (int)player.stabDamage)
 	    {
+		    player.DamageReceivedByTarget(true);
 		    animator.SetTrigger(HitReaction);
 	    }
     }
@@ -116,6 +110,8 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     public void HeavyHitReactionFinished()
     {
 	    animator.SetBool(StaggerBlocked, false);
+	    
+	    if (isDead) return;
 	    bbCurrentState.Value = EnemyBehaviourStates.ReturnToSpawn;
     }
 
@@ -158,9 +154,19 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 		    otherCollider.GetComponent<IDamageable>().TakeDamage(hitDamage, gameObject);
 	    }
     }
+    
+    public void AttackPlayer(int isStart)
+    {
+	    GetComponentInChildren<HitDetectZone>().gameObject.GetComponent<BoxCollider>().enabled = isStart == 1;
+    }
+    
+    
 
+    //* ===== Senses =====
     public void OnSoundHeard(Vector3 soundPosition, GameObject source)
     {
+	    if (isDead) return;
+	    
 	    if (currentSoundPosition == Vector3.zero)
 	    {
 		    currentSoundPosition = soundPosition;
@@ -186,6 +192,19 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     {
 	    currentSoundPosition = Vector3.zero;
     }
+
+
+    private void OnCollisionEnter(Collision other)
+    {
+	    if (other.gameObject.CompareTag("Player") && !isDead)
+	    {
+		    bbForceChasePlayer.Value = true;
+		    bbTarget.Value = other.gameObject;
+		    bbCurrentState.Value = EnemyBehaviourStates.Chase;
+	    }
+    }
+    
+    
 
     // The more the player get close to the dead zombie, the more it will have chances to revive
     private void OnTriggerEnter(Collider other)
