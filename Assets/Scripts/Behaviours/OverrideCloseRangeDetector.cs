@@ -1,4 +1,5 @@
 using System;
+using Player;
 using UnityEngine;
 
 namespace Behaviours
@@ -22,7 +23,11 @@ namespace Behaviours
 			Collider[] colliders = Physics.OverlapSphere(transform.position, overrideDetectionRadius, detectionMask);
 			if (colliders.Length > 0)
 			{
-				if (colliders[0].CompareTag("Player")) isDetected = true;
+				if (colliders[0].CompareTag("Player") && colliders[0].TryGetComponent(out InputManager inputManager))
+				{
+					if (inputManager.isCrouched) return null;
+					isDetected = true;
+				}
 				return colliders[0].gameObject;
 			}
 			

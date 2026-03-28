@@ -29,13 +29,16 @@ namespace Behaviours
 			DetectedTarget = null;
 			isInAngle = false;
 			isVisible = false;
+			Vector3 offSet = new Vector3(0, thisYOffset, 0);
 
 			RaycastHit hit;
 			
 			if (checkSight)
 			{
-				Debug.DrawRay(transform.position + new Vector3(0, thisYOffset, 0), (target.transform.position - transform.position), Color.aquamarine, 0.1f);
-				if (Physics.Raycast(transform.position + new Vector3(0, thisYOffset, 0), (target.transform.position - transform.position), out hit, Mathf.Infinity, sightLayerMask))
+				Vector3 targetPosition = target.TryGetComponent(out Collider col) ? col.bounds.center : target.transform.position;
+				
+				Debug.DrawRay(transform.position + offSet, (targetPosition - transform.position) - offSet, Color.aquamarine, 0.1f);
+				if (Physics.Raycast(transform.position + offSet, (targetPosition - transform.position) - offSet, out hit, Mathf.Infinity, sightLayerMask))
 				{
 					if (hit.transform.CompareTag(target.tag))
 					{
@@ -72,7 +75,7 @@ namespace Behaviours
 			}
 			else
 			{
-				Debug.LogError("Source Error: " + this.name + " - " + this.gameObject + "\nNo checking condition ticked in LineOfSightDetector!\nThis may cause unwanted behaviours!");
+				Debug.LogError("Source Error: " + name + " - " + gameObject + "\nNo checking condition ticked in LineOfSightDetector!\nThis may cause unwanted behaviours!");
 			}
 			
 			return DetectedTarget;
