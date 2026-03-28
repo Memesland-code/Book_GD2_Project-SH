@@ -1812,6 +1812,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::KnifeUI
   knivesNumberText: {fileID: 477720509}
   knifeLifeSlider: {fileID: 1074782151}
+  highLifeColor: {r: 0.6117647, g: 1, b: 0.6117647, a: 1}
+  lowLifeColor: {r: 1, g: 0.6117647, b: 0.6117647, a: 1}
+  lowLifeThreshold: 0
 --- !u!114 &780010336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1826,13 +1829,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLifeUI
   playerLifeImage: {fileID: 350248962}
   excellentLifeColor: {r: 0, g: 0.6509434, b: 0, a: 1}
-  excellentLifeThreshold: 90
-  goodLifeColor: {r: 0, g: 0, b: 0, a: 0}
-  goodLifeThreshold: 60
-  midLifeColor: {r: 0, g: 0, b: 0, a: 0}
-  midLifeThreshold: 40
-  lowLifeColor: {r: 0, g: 0, b: 0, a: 0}
-  lowLifeThreshold: 10
   crticialLifeColor: {r: 0.5283019, g: 0, b: 0, a: 1}
 --- !u!114 &780010337
 MonoBehaviour:
@@ -2352,7 +2348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7176471, g: 0.4291614, b: 0.05490197, a: 1}
+  m_Color: {r: 0.6117647, g: 1, b: 0.6117647, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2364,7 +2360,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.419
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -3582,9 +3578,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 876173024391311299, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -8758845405027943586, guid: 9e85ecaeceeec9446956b1b85f4de55a, type: 3}
+    - target: {fileID: 4044555483376608440, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: data
+      value: 
+      objectReference: {fileID: 11400000, guid: ccee6b7aedfa7db4382875acd84e582a, type: 2}
     - target: {fileID: 4044555483376608440, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
       propertyPath: resolvedValue
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4774046228201961731, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3630,6 +3634,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Item (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8941254676693013537, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8941254676693013537, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 67f885acd664a5f4aae0e22b9b05e6f5, type: 2}
+    - target: {fileID: 8941254676693013537, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e57d3f465a0025145986ffada9792c8e, type: 2}
+    - target: {fileID: 9066087052090546351, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -8758845405027943586, guid: 9e85ecaeceeec9446956b1b85f4de55a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3958,6 +3978,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 876173024391311299, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -8758845405027943586, guid: 9e85ecaeceeec9446956b1b85f4de55a, type: 3}
+    - target: {fileID: 4044555483376608440, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: data
+      value: 
+      objectReference: {fileID: 11400000, guid: ccee6b7aedfa7db4382875acd84e582a, type: 2}
     - target: {fileID: 4044555483376608440, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
       propertyPath: resolvedValue
       value: 5
@@ -4006,6 +4034,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Item (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8941254676693013537, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8941254676693013537, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 67f885acd664a5f4aae0e22b9b05e6f5, type: 2}
+    - target: {fileID: 8941254676693013537, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e57d3f465a0025145986ffada9792c8e, type: 2}
+    - target: {fileID: 9066087052090546351, guid: 1f432d36724b0034aa7bbd7a5443818a, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -8758845405027943586, guid: 9e85ecaeceeec9446956b1b85f4de55a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4153,6 +4197,18 @@ PrefabInstance:
     - target: {fileID: 70366426104397965, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1930633906414445869, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: reviveChance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1930633906414445869, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: hitNumbersToStagger
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1930633906414445869, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
+      propertyPath: reviveChanceAddOnCollision
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2261789745007801950, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: managedReferences[6945941007065153748].m_Value

@@ -75,7 +75,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    nextDamageAcceptTime = Time.time + damageCooldown;
 
 	    if (damageSource.TryGetComponent(out PlayerController player))
-		    player.DamageReceivedByTarget();
+		    player.DamageReceivedByTarget((int)damageAmount == (int)player.stabDamage);
 	    
 	    currentHealth -= damageAmount;
 

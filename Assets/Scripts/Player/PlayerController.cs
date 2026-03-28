@@ -44,8 +44,8 @@ namespace Player
 		
 		[Header("AttackSystem")]
 		[SerializeField] private GameObject attackPoint;
-		[SerializeField] float punchDamage;
-		[SerializeField] float stabDamage;
+		[SerializeField] private float punchDamage;
+		[SerializeField] public float stabDamage;
 		public bool canAttack = true;
 		private bool isPrimaryAttackWay = true; // True = punch | False = stab
 		
@@ -316,9 +316,13 @@ namespace Player
 			}
 		}
 
-		public void DamageReceivedByTarget()
+		public void DamageReceivedByTarget(bool isKnifeAttack)
 		{
-			if (!isPrimaryAttackWay) currentKnife.Use();
+			if (!isPrimaryAttackWay && isKnifeAttack)
+			{
+				currentKnife.Use();
+				RefreshKnifeVisuals();
+			}
 		}
 
 		// Called on animatiion end to reset attack state

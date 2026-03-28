@@ -382,13 +382,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BaseZombie
   maxHealth: 100
   damageCooldown: 1
-  hitNumbersToStagger: 2
+  hitNumbersToStagger: 3
   timeToExpireStagger: 2
   hitDamage: 5
   behaviorAgent: {fileID: 2261789745007801950}
   resetChannel: {fileID: 11400000, guid: 37d6a9adf26c2f14f9dffb207245ab19, type: 2}
-  reviveChance: 0
-  reviveChanceAddOnCollision: 100
+  reviveChance: 20
+  reviveChanceAddOnCollision: 20
 --- !u!1 &118905366306155723
 GameObject:
   m_ObjectHideFlags: 0
