@@ -116,6 +116,7 @@ namespace Player
 			
 			RefreshKnifeVisuals();
 			GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(healthPacks.Count, (int)(healthPacks.FirstOrDefault()?.HealAmount ?? 0));
+			GameManager.Instance.GetPlayerLifeUI().SetPlayerLifePercent(currentHealth/maxHealth);
 		}
 
 		//* ===== Update Logic =====
@@ -315,7 +316,7 @@ namespace Player
 			}
 		}
 
-		public void DamageReceived()
+		public void DamageReceivedByTarget()
 		{
 			if (!isPrimaryAttackWay) currentKnife.Use();
 		}
@@ -436,6 +437,16 @@ namespace Player
 			}
 			
 			return (currentHealth + totalPotentialHealth, playerWeapon.GetTotalAmmo());
+		}
+
+		public float GetCurrentHealth()
+		{
+			return currentHealth;
+		}
+
+		public float GetMaxHealth()
+		{
+			return maxHealth;
 		}
 		
 		

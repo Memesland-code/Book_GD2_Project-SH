@@ -1825,6 +1825,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLifeUI
   playerLifeImage: {fileID: 350248962}
+  excellentLifeColor: {r: 0, g: 0.6509434, b: 0, a: 1}
+  excellentLifeThreshold: 90
+  goodLifeColor: {r: 0, g: 0, b: 0, a: 0}
+  goodLifeThreshold: 60
+  midLifeColor: {r: 0, g: 0, b: 0, a: 0}
+  midLifeThreshold: 40
+  lowLifeColor: {r: 0, g: 0, b: 0, a: 0}
+  lowLifeThreshold: 10
+  crticialLifeColor: {r: 0.5283019, g: 0, b: 0, a: 1}
 --- !u!114 &780010337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1965,6 +1974,7 @@ GameObject:
   - component: {fileID: 847434552}
   - component: {fileID: 847434555}
   - component: {fileID: 847434554}
+  - component: {fileID: 847434556}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: CinemachineCam
@@ -2062,6 +2072,23 @@ MonoBehaviour:
     RotationDamping: {x: 0, y: 0, z: 0}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &847434556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847434549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBasicMultiChannelPerlin
+  NoiseProfile: {fileID: 11400000, guid: a3dacaec0287d7444b4bd276816e1666, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 0
+  FrequencyGain: 0
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &864227245 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6604497255257758685, guid: 13f345bee971b6a4c99a782568116f26, type: 3}
@@ -4054,6 +4081,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 491951639126253705, guid: 9e3e25973c4a910448e413bb57583cbc, type: 3}
+      propertyPath: maxAmplitude
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 491951639126253705, guid: 9e3e25973c4a910448e413bb57583cbc, type: 3}
+      propertyPath: maxFrequency
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3986012819292833151, guid: 9e3e25973c4a910448e413bb57583cbc, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12.37

@@ -5,7 +5,9 @@ namespace Player
 {
 	public class CameraManager : MonoBehaviour
 	{
-		private InputManager inputs;
+		private InputManager input;
+		private PlayerController playerController;
+		private CinemachineBasicMultiChannelPerlin camNoise;
 
 		[Header("Basic controls")]
 		[SerializeField] private float mouseSensivity;
@@ -16,32 +18,38 @@ namespace Player
 		[SerializeField] private float standingNearClippingFrame;
 		[SerializeField] private float crouchingNearClippingFrame;
 		
-		
 		[Space(10)]
 		[Header("Gameplay")]
 		[SerializeField] private float baseFOV;
 		[SerializeField] private float aimingFOV;
 		[SerializeField] private float aimTransitionSpeed;
+
+		[SerializeField] private float minAmplitude;
+		[SerializeField] private float maxAmplitude;
+		[SerializeField] private float minFrequency;
+		[SerializeField] private float maxFrequency;
 		
 		[HideInInspector] public CinemachineCamera cam;
 		private float xRotation;
 
 		private void Awake()
 		{
-			inputs = GetComponent<InputManager>();
+			input = GetComponent<InputManager>();
+			playerController = GetComponent<PlayerController>();
 		}
 
 		private void Start()
 		{ 
 			cam = GameObject.FindGameObjectWithTag("CinemachineCam").GetComponent<CinemachineCamera>();
+			camNoise = cam.GetComponent<CinemachineBasicMultiChannelPerlin>();
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
 		}
 
 		private void Update()
 		{
-			float mouseX = inputs.lookInput.x * mouseSensivity * Time.deltaTime;
-			float mouseY = inputs.lookInput.y * mouseSensivity * Time.deltaTime;
+			float mouseX = input.lookInput.x * mouseSensivity * Time.deltaTime;
+			float mouseY = input.lookInput.y * mouseSensivity * Time.deltaTime;
 			
 			xRotation -= mouseY;
 			xRotation = Mathf.Clamp(xRotation, bottomClamp, topClamp);
@@ -49,6 +57,12 @@ namespace Player
 			cameraPos.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 			
 			playerBody.Rotate(Vector3.up * mouseX);
+			
+			float healthPercent = playerController.GetCurrentHealth() / playerController.GetMaxHealth();
+			float intensity = 1f - healthPercent;
+			
+			camNoise.AmplitudeGain = Mathf.Lerp(minAmplitude, maxAmplitude, intensity);
+			camNoise.FrequencyGain = Mathf.Lerp(minFrequency, maxFrequency, intensity);
 		}
 
 		public void SetCameraPosition(bool isCrouched, Vector3 targetCameraPosition, float crouchTransitionSpeed)
