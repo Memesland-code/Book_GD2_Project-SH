@@ -2667,7 +2667,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   weaponRange: 100
-  weaponDamage: 100
+  weaponDamage: 10
   maxMagazineAmmo: 10
   currentInventoryAmmo: 100
   reloadTime: 0.5

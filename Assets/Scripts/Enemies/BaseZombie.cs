@@ -8,10 +8,16 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 {
 	private static readonly int HitReaction = Animator.StringToHash("HitReaction");
 	private static readonly int Revive1 = Animator.StringToHash("Revive");
-	
+	private static readonly int HeavyHitReaction = Animator.StringToHash("HeavyHitReaction");
+	private static readonly int StaggerBlocked = Animator.StringToHash("StaggerBlocked");
+
 	[SerializeField] private float maxHealth = 100f;
 	[SerializeField] private float damageCooldown;
 	private float nextDamageAcceptTime;
+	[SerializeField] private int hitNumbersToStagger;
+	private int currentHitTimes;
+	[SerializeField] private float timeToExpireStagger;
+	private float nextStaggerExpireTime;
 	
 	[SerializeField] private float hitDamage;
     private float currentHealth;
@@ -23,7 +29,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     private float baseReviveChance;
     [SerializeField] private float reviveChanceAddOnCollision;
     
-    private BlackboardVariable<State> bbCurrentState;
+    private BlackboardVariable<EnemyBehaviourStates> bbCurrentState;
     private BlackboardVariable<Vector3> bbInvestigatePosition;
     private BlackboardVariable<GameObject> bbTarget;
     private BlackboardVariable<bool> bbForceChasePlayer;
@@ -48,7 +54,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    behaviorAgent = GetComponent<BehaviorGraphAgent>();
 	    
 	    // Check if BB reference exist and set them to our variable
-	    if (behaviorAgent.BlackboardReference.GetVariable("CurrentState", out bbCurrentState)) {}
+	    if (behaviorAgent.BlackboardReference.GetVariable("EnemyBehaviourStates", out bbCurrentState)) {}
 	    if (behaviorAgent.BlackboardReference.GetVariable("InvestigatePosition", out bbInvestigatePosition)) {}
 	    if (behaviorAgent.BlackboardReference.GetVariable("Target", out bbTarget)) {}
 	    if (behaviorAgent.BlackboardReference.GetVariable("ForceChasePlayer", out bbForceChasePlayer)) {}
@@ -79,14 +85,38 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 		    return;
 	    }
 	    
-	    animator.SetTrigger(HitReaction);
-
 	    if (damageSource.CompareTag("Player"))
 	    {
 		    bbForceChasePlayer.Value = true;
 		    bbTarget.Value = damageSource;
-		    bbCurrentState.Value = State.Chase;
+		    bbCurrentState.Value = EnemyBehaviourStates.Chase;
 	    }
+
+	    if (Time.time > nextStaggerExpireTime)
+	    {
+		    currentHitTimes = 0;
+	    }
+
+	    currentHitTimes++;
+	    nextStaggerExpireTime = Time.time + timeToExpireStagger;
+	    
+	    if (currentHitTimes >= hitNumbersToStagger)
+	    {
+		    bbCurrentState.Value = EnemyBehaviourStates.Stagger;
+		    animator.SetBool(StaggerBlocked, true);
+		    animator.SetTrigger(HeavyHitReaction);
+		    currentHitTimes = 0;
+	    }
+	    else
+	    {
+		    animator.SetTrigger(HitReaction);
+	    }
+    }
+
+    public void HeavyHitReactionFinished()
+    {
+	    animator.SetBool(StaggerBlocked, false);
+	    bbCurrentState.Value = EnemyBehaviourStates.ReturnToSpawn;
     }
 
     public void Heal(float healAmount)
@@ -96,21 +126,18 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 
     private void Death()
     {
+	    isDead = true;
 	    GetComponent<Rigidbody>().isKinematic = true;
 	    GetComponent<Collider>().enabled = false;
-	    bbCurrentState.Value = State.Dead;
-	    isDead = true;
+	    bbCurrentState.Value = EnemyBehaviourStates.Dead;
 	    deadTrigger.enabled = true;
-	    Debug.LogWarning(gameObject.name + " is Dead");
     }
 
     // Effective revive to animate zombie
     public void Revive()
     {
-	    Debug.LogWarning("Revive executed on " + gameObject.name);
 	    deadTrigger.enabled = false;
 	    reviveChance = baseReviveChance;
-	    //animator.SetTrigger(Revive1);
 	    resetChannel.SendEventMessage();
     }
 
@@ -120,8 +147,8 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    GetComponent<Rigidbody>().isKinematic = true;
 	    GetComponent<Collider>().enabled = true;
 	    currentHealth = maxHealth;
+	    bbCurrentState.Value = EnemyBehaviourStates.Patrol;
 	    isDead = false;
-	    bbCurrentState.Value = State.Patrol;
     }
 
     public void OnAttackCollision(Collider otherCollider)
@@ -151,8 +178,8 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 		    }
 	    }
 	    
-	    bbCurrentState.Value = State.Patrol; // Workaround, forces graph blackboard to be reevaluated
-	    bbCurrentState.Value = State.Investigate;
+	    bbCurrentState.Value = EnemyBehaviourStates.Patrol; // Workaround, forces graph blackboard to be reevaluated
+	    bbCurrentState.Value = EnemyBehaviourStates.Investigate;
     }
 
     public void OnSoundInvestigate()
