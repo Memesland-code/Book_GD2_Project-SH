@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Player
@@ -57,16 +55,27 @@ namespace Player
 		[SerializeField] private GameObject charPants;
 		
 		[Header("Inventory System")]
-		public List<HealthPackInstance> healthPacks = new List<HealthPackInstance>();
+		public List<HealthPackInstance> HealthPacks = new List<HealthPackInstance>();
 		private float totalPotentialHealth;
 		
-		public List<KnifeInstance> knives = new List<KnifeInstance>();
-		public KnifeInstance currentKnife => knives.LastOrDefault(k => k.IsUsable);
+		public List<KnifeInstance> Knives = new List<KnifeInstance>();
+		public KnifeInstance CurrentKnife => Knives.LastOrDefault(k => k.IsUsable);
 		
 		[Header("Interaction System")]
 		[SerializeField] private float interactDistance;
 		[SerializeField] private float interactSphereRadius;
 		[SerializeField] private LayerMask pickableLayer;
+		
+		[Header("Sanity System")]
+		[SerializeField] private float maxSanity;
+		private float currentSanity;
+		[SerializeField] private float sanityMaxDrainSpeed;
+		[SerializeField] private float sanityRecoverSpeed;
+		[Space(5)]
+		[SerializeField] private LayerMask horrificLayer;
+		[SerializeField] private LayerMask obstructionLayer;
+		[SerializeField] private float viewDistance;
+		[SerializeField, Range(0.1f, 0.9f), Tooltip("Higher value = thinner cone")] private float coneSize;
 		
 		private InputManager input;
 		private Rigidbody rb;
@@ -75,6 +84,7 @@ namespace Player
 		private CameraManager cameraManager;
 		[HideInInspector] public PlayerWeapon playerWeapon;
 
+		[Header("Camera")]
 		[SerializeField] private Vector3 standCameraPosition = new (0, 1.65f, 0.15f);
 		[SerializeField] private Vector3 crouchedCameraPosition = new (0, 0.79f, 0.4f);
 		
@@ -115,7 +125,7 @@ namespace Player
 			standHeight = playerCollider.height;
 			
 			RefreshKnifeVisuals();
-			GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(healthPacks.Count, (int)(healthPacks.FirstOrDefault()?.HealAmount ?? 0));
+			GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(HealthPacks.Count, (int)(HealthPacks.FirstOrDefault()?.HealAmount ?? 0));
 			GameManager.Instance.GetPlayerLifeUI().SetPlayerLifePercent(currentHealth/maxHealth);
 		}
 
@@ -124,6 +134,7 @@ namespace Player
 		{
 			UpdateMoveStatus();
 			UpdatePlayerColliderAndCam();
+			UpdateSanitySystem();
 			
 			cameraManager.SetCameraFOV(input.isAiming, isDead);
 			if (input.isAiming)
@@ -281,7 +292,7 @@ namespace Player
 			input.isCrouched = false;
 			animator.SetBool(IsCrouched, false);
 			
-			if (knives.Count > 0)
+			if (Knives.Count > 0)
 			{
 				isPrimaryAttackWay = false;
 				animator.SetTrigger(Stab);
@@ -320,7 +331,7 @@ namespace Player
 		{
 			if (!isPrimaryAttackWay && isKnifeAttack)
 			{
-				currentKnife.Use();
+				CurrentKnife.Use();
 				RefreshKnifeVisuals();
 			}
 		}
@@ -377,11 +388,11 @@ namespace Player
 			// Create instance and set break event to execute the remove knife from inventory
 			knife.OnBroken += () =>
 			{
-				knives.Remove(knife);
+				Knives.Remove(knife);
 				RefreshKnifeVisuals();
 			};
 			
-			knives.Add(knife);
+			Knives.Add(knife);
 			RefreshKnifeVisuals();
 			
 		}
@@ -389,12 +400,12 @@ namespace Player
 		private void RefreshKnifeVisuals()
 		{
 			KnifeUI knifeUI = GameManager.Instance.GetKnifeUI();
-			knifeUI.RefreshKnivesUI(knives.Count, currentKnife?.Durability ?? 0);
+			knifeUI.RefreshKnivesUI(Knives.Count, CurrentKnife?.Durability ?? 0);
 			
-			if (knives.Count > 0 && currentKnife != null)
+			if (Knives.Count > 0 && CurrentKnife != null)
 			{
-				attackPoint.GetComponent<MeshFilter>().mesh = currentKnife.Data.mesh;
-				attackPoint.GetComponent<MeshRenderer>().materials = currentKnife.Data.materials;
+				attackPoint.GetComponent<MeshFilter>().mesh = CurrentKnife.Data.mesh;
+				attackPoint.GetComponent<MeshRenderer>().materials = CurrentKnife.Data.materials;
 			}
 			else
 			{
@@ -408,24 +419,31 @@ namespace Player
 		{
 			var pack = new HealthPackInstance { Data = data, HealAmount = healAmount };
 
-			pack.OnUsed += () => healthPacks.Remove(pack);
-			healthPacks.Add(pack);
+			pack.OnUsed += () => HealthPacks.Remove(pack);
+			HealthPacks.Add(pack);
 			
-			var firstPack = healthPacks.FirstOrDefault();
+			var firstPack = HealthPacks.FirstOrDefault();
 			
 			if (firstPack != null)
-				GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(healthPacks.Count, (int)firstPack.HealAmount);
+				GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(HealthPacks.Count, (int)firstPack.HealAmount);
 		}
 
 		public void UseHealthPack()
 		{
-			var pack = healthPacks.FirstOrDefault();
+			var pack = HealthPacks.FirstOrDefault();
 			if (pack != null)
 			{
 				pack.Use(this);
-				GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(healthPacks.Count, (int)(healthPacks.FirstOrDefault()?.HealAmount ?? 0));
+				GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(HealthPacks.Count, (int)(HealthPacks.FirstOrDefault()?.HealAmount ?? 0));
 			}
-
+		}
+		
+		
+		
+		//* ===== Sanity System =====
+		private void UpdateSanitySystem()
+		{
+			//! TODO: write content
 		}
 
 		
@@ -435,7 +453,7 @@ namespace Player
 		{
 			totalPotentialHealth = 0;
 			
-			foreach (HealthPackInstance healthPack in healthPacks)
+			foreach (HealthPackInstance healthPack in HealthPacks)
 			{
 				totalPotentialHealth += healthPack.HealAmount;
 			}

@@ -2606,9 +2606,10 @@ MonoBehaviour:
   pickableLayer:
     serializedVersion: 2
     m_Bits: 256
+  maxSanity: 0
   playerWeapon: {fileID: 0}
   standCameraPosition: {x: 0, y: 1.4, z: 0.35}
-  crouchedCameraPosition: {x: 0, y: 0.6, z: 0.4}
+  crouchedCameraPosition: {x: 0, y: 0.6, z: 0.35}
   showDebugGizmos: 1
 --- !u!114 &491951639126253705
 MonoBehaviour:
@@ -2628,11 +2629,20 @@ MonoBehaviour:
   topClamp: 70
   bottomClamp: -90
   standingNearClippingFrame: 0.05
-  crouchingNearClippingFrame: 0.3
+  crouchingNearClippingFrame: 0.05
   baseFOV: 90
   aimingFOV: 60
   aimTransitionSpeed: 7.5
+  minAmplitude: 0
+  maxAmplitude: 3
+  minFrequency: 0
+  maxFrequency: 1.5
   cam: {fileID: 0}
+  minBlurEffect: 0
+  maxBlurEffect: 0.005
+  minDistortEffect: 0
+  maxDistortEffect: -0.5
+  sanityMaterial: {fileID: 2100000, guid: 412bb6f5144d75d4a9dd6b3ee80b8114, type: 2}
 --- !u!114 &4073339355459421025
 MonoBehaviour:
   m_ObjectHideFlags: 0

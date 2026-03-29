@@ -64,7 +64,8 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     //* ===== IDamageable and attack Related =====
     public void TakeDamage(float damageAmount, GameObject damageSource)
     {
-	    if (isDead || Time.time <= nextDamageAcceptTime) return;
+	    if (isDead) return;
+	    if (Time.time <= nextDamageAcceptTime) return;
 	    
 	    nextDamageAcceptTime = Time.time + damageCooldown;
 	    
@@ -123,10 +124,16 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     private void Death()
     {
 	    isDead = true;
+	    
 	    GetComponent<Rigidbody>().isKinematic = true;
-	    GetComponent<Collider>().enabled = false;
+	    GetComponent<CapsuleCollider>().enabled = false;
+	    
+	    bbForceChasePlayer.Value = false;
+	    bbTarget.Value = null;
 	    bbCurrentState.Value = EnemyBehaviourStates.Dead;
+	    
 	    deadTrigger.enabled = true;
+	    
     }
 
     // Effective revive to animate zombie
@@ -141,9 +148,8 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     public void ReviveEnded()
     {
 	    GetComponent<Rigidbody>().isKinematic = true;
-	    GetComponent<Collider>().enabled = true;
+	    GetComponent<CapsuleCollider>().enabled = true;
 	    currentHealth = maxHealth;
-	    bbCurrentState.Value = EnemyBehaviourStates.Patrol;
 	    isDead = false;
     }
 
@@ -209,13 +215,14 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     // The more the player get close to the dead zombie, the more it will have chances to revive
     private void OnTriggerEnter(Collider other)
     {
-	    if (other.CompareTag("Player"))
+	    if (other.CompareTag("Player") && isDead)
 	    {
 		    float rolledReviveChances = Random.Range(0, 100);
 
 		    if (rolledReviveChances <= reviveChance)
 		    {
 			    Revive();
+			    Debug.LogWarning("Revived because of player");
 		    }
 		    else
 		    {

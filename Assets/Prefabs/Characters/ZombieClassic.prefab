@@ -353,7 +353,7 @@ MonoBehaviour:
   detectionAngle: 45
   sightLayerMask:
     serializedVersion: 2
-    m_Bits: 191
+    m_Bits: 201
   thisYOffset: 1.4
   showDebugVisuals: 1
 --- !u!114 &1188158300633510913
