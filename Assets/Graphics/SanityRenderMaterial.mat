@@ -126,8 +126,12 @@ Material:
     - _ZWrite: 1
     - _vigneteAspect: 1.5
     - _vigneteSize: 0.3
-    - _vignetteAspect: 1.5
-    - _vignetteSize: 2
+    - _vignetteAspect: 8
+    - _vignetteHorizontalAspect: 0
+    - _vignetteSize: 1
+    - _vignetteSizeBlur: 3
+    - _vignetteSizeDistort: 5
+    - _vignetteVerticalAspect: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

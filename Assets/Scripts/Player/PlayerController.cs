@@ -69,13 +69,14 @@ namespace Player
 		[Header("Sanity System")]
 		[SerializeField] private float maxSanity;
 		private float currentSanity;
-		[SerializeField] private float sanityMaxDrainSpeed;
-		[SerializeField] private float sanityRecoverSpeed;
+		[SerializeField, Tooltip("In point / second")] private float sanityMaxDrainSpeed;
+		[SerializeField, Tooltip("In point / second")] private float recoveryRate;
 		[Space(5)]
-		[SerializeField] private LayerMask horrificLayer;
+		[SerializeField] private LayerMask horrorLayer;
 		[SerializeField] private LayerMask obstructionLayer;
 		[SerializeField] private float viewDistance;
-		[SerializeField, Range(0.1f, 0.9f), Tooltip("Higher value = thinner cone")] private float coneSize;
+		[SerializeField, Range(0f, 120f)] private float peripheralConeAngle;
+		private float peripheralLookThreshold;
 		
 		private InputManager input;
 		private Rigidbody rb;
@@ -95,6 +96,7 @@ namespace Player
 		
 		[Space(10), Header("DEBUG")]
 		[SerializeField] bool showDebugGizmos;
+		[SerializeField] bool showDirectLookCone;
 		private Vector3 interactSphereOrigin;
 	
 		void Awake()
@@ -121,8 +123,12 @@ namespace Player
 			currentHealth = maxHealth;
 			isDead = false;
 
+			currentSanity = maxSanity;
+
 			standCenter = playerCollider.center;
 			standHeight = playerCollider.height;
+			
+			peripheralLookThreshold = Mathf.Cos(peripheralConeAngle * Mathf.Deg2Rad);
 			
 			RefreshKnifeVisuals();
 			GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(HealthPacks.Count, (int)(HealthPacks.FirstOrDefault()?.HealAmount ?? 0));
@@ -443,7 +449,39 @@ namespace Player
 		//* ===== Sanity System =====
 		private void UpdateSanitySystem()
 		{
-			//! TODO: write content
+			float highestInfluence = 0;
+			Transform cam = cameraManager.cam.transform;
+
+			// Scanning zone
+			Collider[] hits = Physics.OverlapSphere(cam.position, viewDistance, horrorLayer);
+			
+			foreach (var hit in hits)
+			{
+				Vector3 dirToTarget;
+				
+				if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit rayHit, viewDistance, horrorLayer))
+					dirToTarget = (rayHit.point - cam.transform.position).normalized; // Compare with direct collision point if found
+				else
+					dirToTarget = (hit.bounds.center - cam.transform.position).normalized; // Compare with collider bounds center by default
+				
+				
+				float dot = Vector3.Dot(cam.forward, dirToTarget);
+				
+				// Checking if object in angle
+				if (dot < peripheralLookThreshold) continue;
+				
+				if (Physics.Raycast(cam.transform.position, dirToTarget, obstructionLayer)) continue;
+				
+				// Calculates the most centered-point to determine the highest horroro in-view object
+				float angleToCenter = (dot - peripheralLookThreshold) / (1f - peripheralLookThreshold);
+				highestInfluence = Mathf.Max(highestInfluence, Mathf.Lerp(0f, sanityMaxDrainSpeed, angleToCenter));
+			}
+			
+			// Updating sanity value
+			currentSanity += (highestInfluence > 0f ? -highestInfluence : recoveryRate) * Time.deltaTime;
+			currentSanity = Mathf.Clamp(currentSanity, 0f, maxSanity);
+			
+			cameraManager.ApplySanityEffect(currentSanity);
 		}
 
 		
@@ -481,14 +519,47 @@ namespace Player
 			if (Application.isPlaying)
 			{
 				Gizmos.color = Color.magenta;
-				Gizmos.DrawRay(cameraManager.cam.transform.position, cameraManager.cam.transform.forward);
+				Gizmos.DrawRay(cameraManager.cam.transform.position, cameraManager.cam.transform.forward * 10);
+
+				Gizmos.color = Color.tomato;
+				DrawCone(cameraManager.cam.transform.position, cameraManager.cam.transform.forward, peripheralConeAngle, viewDistance);
 			}
 
+			Gizmos.color = new Color(1, 0, 0, 0.1f);
+			Gizmos.DrawWireSphere(transform.position, viewDistance);
+			
 			Gizmos.color = Color.rebeccaPurple;
 			Gizmos.DrawWireSphere(interactSphereOrigin, interactSphereRadius);
 
-			Gizmos.color = Color.darkOrange;
+			Gizmos.color = Color.yellow;
 			Gizmos.DrawWireSphere(transform.position, runningSoundRadius);
+		}
+
+		private void DrawCone(Vector3 origin, Vector3 forward, float angle, float range)
+		{
+			int segments = 20;
+			Vector3 prevPoint = Vector3.zero;
+
+			for (int i = 0; i <= segments; i++)
+			{
+				float t = (float)i / segments * 360f * Mathf.Deg2Rad;
+				
+				Vector3 right = cameraManager.cam.transform.right;
+				Vector3 up = cameraManager.cam.transform.up;
+				float radius = Mathf.Tan(angle * Mathf.Deg2Rad) * range;
+
+				Vector3 point = origin + forward * range
+				                       + right * (Mathf.Cos(t) * radius)
+				                       + up * (Mathf.Sin(t) * radius);
+
+				if (i > 0)
+				{
+					Gizmos.DrawLine(prevPoint, point);
+					if (i % 5 == 0) Gizmos.DrawLine(origin, point);
+				}
+
+				prevPoint = point;
+			}
 		}
 	}
 }

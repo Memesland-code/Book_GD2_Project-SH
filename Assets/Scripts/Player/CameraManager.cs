@@ -1,3 +1,4 @@
+using System;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace Player
 	{
 		private static readonly int BlurStrength = Shader.PropertyToID("_BlurStrength");
 		private static readonly int DistortStrength = Shader.PropertyToID("_DistortStrength");
+		private static readonly int VignetteHorizontalAspect = Shader.PropertyToID("_vignetteHorizontalAspect");
+		private static readonly int VignetteVerticalAspect = Shader.PropertyToID("_vignetteVerticalAspect");
 		private InputManager input;
 		private PlayerController playerController;
 		private CinemachineBasicMultiChannelPerlin camNoise;
@@ -37,8 +40,16 @@ namespace Player
 		[Header("Sanity System")]
 		[SerializeField] private float minBlurEffect;
 		[SerializeField] private float maxBlurEffect;
+		[Space(5)]
 		[SerializeField] private float minDistortEffect;
 		[SerializeField] private float maxDistortEffect;
+		[Space(5)]
+		[SerializeField] private float minVignetteHorizontalEffect;
+		[SerializeField] private float maxVignetteHorizontalEffect;
+		[Space(5)]
+		[SerializeField] private float minVignetteVerticalEffect;
+		[SerializeField] private float maxVignetteVerticalEffect;
+		[Space(5)]
 		[SerializeField] private Material sanityMaterial;
 
 		private void Awake()
@@ -95,10 +106,20 @@ namespace Player
 
 
 
-		public void ApplySanityEffect(float mentalHealth)
+		public void ApplySanityEffect(float sanity)
 		{
-			sanityMaterial.SetFloat(BlurStrength, Mathf.Lerp(minBlurEffect, maxBlurEffect, mentalHealth));
-			sanityMaterial.SetFloat(DistortStrength, Mathf.Lerp(minDistortEffect, maxDistortEffect, mentalHealth));
+			sanityMaterial.SetFloat(BlurStrength, Mathf.Lerp(minBlurEffect, maxBlurEffect, 1 - sanity / 100));
+			sanityMaterial.SetFloat(DistortStrength, Mathf.Lerp(minDistortEffect, maxDistortEffect, 1 - sanity / 100));
+			sanityMaterial.SetFloat(VignetteHorizontalAspect, Mathf.Lerp(minVignetteHorizontalEffect, maxVignetteHorizontalEffect, 1 - sanity / 100));
+			sanityMaterial.SetFloat(VignetteVerticalAspect, Mathf.Lerp(minVignetteVerticalEffect, maxVignetteVerticalEffect, 1 - sanity / 100));
+		}
+
+		private void OnDestroy()
+		{
+			sanityMaterial.SetFloat(BlurStrength, minBlurEffect);
+			sanityMaterial.SetFloat(DistortStrength, minDistortEffect);
+			sanityMaterial.SetFloat(VignetteHorizontalAspect, minDistortEffect);
+			sanityMaterial.SetFloat(VignetteVerticalAspect, minDistortEffect);
 		}
 	}
 }

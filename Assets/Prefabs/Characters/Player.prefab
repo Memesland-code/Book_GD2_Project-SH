@@ -2606,11 +2606,22 @@ MonoBehaviour:
   pickableLayer:
     serializedVersion: 2
     m_Bits: 256
-  maxSanity: 0
+  maxSanity: 100
+  sanityMaxDrainSpeed: 5
+  recoveryRate: 10
+  horrorLayer:
+    serializedVersion: 2
+    m_Bits: 576
+  obstructionLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  viewDistance: 12
+  peripheralConeAngle: 60
   playerWeapon: {fileID: 0}
   standCameraPosition: {x: 0, y: 1.4, z: 0.35}
   crouchedCameraPosition: {x: 0, y: 0.6, z: 0.35}
   showDebugGizmos: 1
+  showDirectLookCone: 1
 --- !u!114 &491951639126253705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2627,7 +2638,7 @@ MonoBehaviour:
   playerBody: {fileID: 3986012819292833151}
   cameraPos: {fileID: 7553435800174939199}
   topClamp: 70
-  bottomClamp: -90
+  bottomClamp: -70
   standingNearClippingFrame: 0.05
   crouchingNearClippingFrame: 0.05
   baseFOV: 90
@@ -2641,7 +2652,11 @@ MonoBehaviour:
   minBlurEffect: 0
   maxBlurEffect: 0.005
   minDistortEffect: 0
-  maxDistortEffect: -0.5
+  maxDistortEffect: -0.05
+  minVignetteHorizontalEffect: 0
+  maxVignetteHorizontalEffect: 8
+  minVignetteVerticalEffect: 0
+  maxVignetteVerticalEffect: 8
   sanityMaterial: {fileID: 2100000, guid: 412bb6f5144d75d4a9dd6b3ee80b8114, type: 2}
 --- !u!114 &4073339355459421025
 MonoBehaviour:

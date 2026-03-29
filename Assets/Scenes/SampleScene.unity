@@ -4711,10 +4711,6 @@ PrefabInstance:
       propertyPath: 'managedReferences[6945941007065153752].m_Value.Array.data[3]'
       value: 
       objectReference: {fileID: 864227245}
-    - target: {fileID: 4030397166312613179, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
-      propertyPath: showDebugVisuals
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.004
@@ -4754,10 +4750,6 @@ PrefabInstance:
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8782419974250307792, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
-      propertyPath: showDebugVisuals
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
