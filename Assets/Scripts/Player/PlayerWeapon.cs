@@ -22,6 +22,10 @@ namespace Player
 		
 		[Header("Sound System")]
 		[SerializeField] private float fireHearRadius;
+		[SerializeField] private AudioSource weaponAudioSource;
+		[SerializeField] private AudioClip fireSound;
+		[SerializeField] private AudioClip emptyMagazineSound;
+		[SerializeField] private AudioClip reloadSound;
 		
 		[Space(20), Header("Debug")]
 		[SerializeField] private bool showDebugRay;
@@ -58,6 +62,9 @@ namespace Player
 			int ammoToReload = maxMagazineAmmo - currentMagazineAmmo;
 
 			if (ammoToReload <= 0) return;
+			
+			weaponAudioSource.clip = reloadSound;
+			weaponAudioSource.Play();
 
 			if (currentInventoryAmmo >= ammoToReload)
 			{
@@ -80,7 +87,8 @@ namespace Player
 			
 			if (currentMagazineAmmo <= 0)
 			{
-				// Play empty magazine sound?
+				weaponAudioSource.clip = emptyMagazineSound;
+				weaponAudioSource.Play();
 				return;
 			}
 			
@@ -95,7 +103,8 @@ namespace Player
 
 		public void ShootRaycast()
 		{
-			// Play shoot sound
+			weaponAudioSource.clip = fireSound;
+			weaponAudioSource.Play();
 			// Play muzzle flash VFX
 			
 			SoundSystem.EmitSound(muzzle.position, fireHearRadius, gameObject);

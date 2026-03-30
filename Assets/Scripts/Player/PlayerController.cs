@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Player
 {
@@ -77,6 +78,21 @@ namespace Player
 		[SerializeField] private float viewDistance;
 		[SerializeField, Range(0f, 120f)] private float peripheralConeAngle;
 		private float peripheralLookThreshold;
+
+		[Header("SoundSystem")]
+		[SerializeField] private AudioMixer mainMixer;
+		[SerializeField] private AudioSource weaponAudioSource;
+		[SerializeField] private AudioClip stabSound;
+		
+		[Header("HeartBeat effect")]
+		[SerializeField] private AudioSource heartBeatSound;
+		private const string SanityLowPassParam = "SanityLowPass";
+		[SerializeField] float normalFrequency = 22000;
+		[SerializeField] float muffledFrequency = 500;
+		
+		[SerializeField] private float minPitch;
+		[SerializeField] private float maxPitch;
+		[SerializeField] private float maxVolume;
 		
 		private InputManager input;
 		private Rigidbody rb;
@@ -133,6 +149,8 @@ namespace Player
 			RefreshKnifeVisuals();
 			GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(HealthPacks.Count, (int)(HealthPacks.FirstOrDefault()?.HealAmount ?? 0));
 			GameManager.Instance.GetPlayerLifeUI().SetPlayerLifePercent(currentHealth/maxHealth);
+
+			if (heartBeatSound) heartBeatSound.volume = 0;
 		}
 
 		//* ===== Update Logic =====
@@ -337,6 +355,8 @@ namespace Player
 		{
 			if (!isPrimaryAttackWay && isKnifeAttack)
 			{
+				weaponAudioSource.clip = stabSound;
+				weaponAudioSource.Play();
 				CurrentKnife.Use();
 				RefreshKnifeVisuals();
 			}
@@ -482,6 +502,27 @@ namespace Player
 			currentSanity = Mathf.Clamp(currentSanity, 0f, maxSanity);
 			
 			cameraManager.ApplySanityEffect(currentSanity);
+			
+			UpdateHeartBeatEffect();
+		}
+
+
+
+		private void UpdateHeartBeatEffect()
+		{
+			// Revert sanity value: 0 = good, 100 = bad - easier to calculate after
+			float t = 1f - (currentSanity / 100);
+
+			float targetFreqency = Mathf.Lerp(normalFrequency, muffledFrequency, t);
+			mainMixer.SetFloat(SanityLowPassParam, targetFreqency);
+
+			if (heartBeatSound)
+			{
+				float soundThreshold = Mathf.Clamp01((t - 0.3f) / 0.9f);
+				heartBeatSound.volume = soundThreshold * maxVolume;
+
+				heartBeatSound.pitch = Mathf.Lerp(minPitch, maxPitch, t);
+			}
 		}
 
 		

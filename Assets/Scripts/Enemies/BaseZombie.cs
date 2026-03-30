@@ -27,6 +27,10 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     [SerializeField] private float reviveChance;
     private float baseReviveChance;
     [SerializeField] private float reviveChanceAddOnCollision;
+
+    [SerializeField] private AudioSource zombieAudioSource;
+    [SerializeField] private AudioClip zombieScreamClip;
+    [SerializeField] private AudioClip zombieHeavyHitClip;
     
     private BlackboardVariable<EnemyBehaviourStates> bbCurrentState;
     private BlackboardVariable<Vector3> bbInvestigatePosition;
@@ -169,7 +173,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     
 
     //* ===== Senses =====
-    public void OnSoundHeard(Vector3 soundPosition, GameObject source)
+    public virtual void OnSoundHeard(Vector3 soundPosition, GameObject source)
     {
 	    if (isDead) return;
 	    
@@ -209,8 +213,6 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 		    bbCurrentState.Value = EnemyBehaviourStates.Chase;
 	    }
     }
-    
-    
 
     // The more the player get close to the dead zombie, the more it will have chances to revive
     private void OnTriggerEnter(Collider other)
@@ -229,5 +231,20 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 			    reviveChance += reviveChanceAddOnCollision;
 		    }
 	    }
+    }
+    
+    
+    
+    //* ===== Others - Sound effects =====
+    public void PlayScreamSound()
+    {
+	    zombieAudioSource.clip = zombieScreamClip;
+	    zombieAudioSource.Play();
+    }
+
+    public void PlayHeavyHitReactionSound()
+    {
+	    zombieAudioSource.clip = zombieHeavyHitClip;
+	    zombieAudioSource.Play();
     }
 }
