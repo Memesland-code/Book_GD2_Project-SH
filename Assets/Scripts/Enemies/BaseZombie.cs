@@ -1,6 +1,7 @@
 using Player;
 using Unity.Behavior;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
@@ -21,25 +22,25 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	[SerializeField] private float hitDamage;
     private float currentHealth;
 	    
-    [SerializeField] private BehaviorGraphAgent behaviorAgent;
+    [SerializeField] protected BehaviorGraphAgent behaviorAgent;
     [SerializeField] private ResetGraphValues resetChannel;
 
     [SerializeField] private float reviveChance;
     private float baseReviveChance;
     [SerializeField] private float reviveChanceAddOnCollision;
 
-    [SerializeField] private AudioSource zombieAudioSource;
+    [SerializeField] protected AudioSource zombieAudioSource;
     [SerializeField] private AudioClip zombieScreamClip;
     [SerializeField] private AudioClip zombieHeavyHitClip;
     
-    private BlackboardVariable<EnemyBehaviourStates> bbCurrentState;
-    private BlackboardVariable<Vector3> bbInvestigatePosition;
+    protected BlackboardVariable<EnemyBehaviourStates> bbCurrentState;
+    protected BlackboardVariable<Vector3> bbInvestigatePosition;
     private BlackboardVariable<GameObject> bbTarget;
     private BlackboardVariable<bool> bbForceChasePlayer;
     
     private Animator animator;
-    private bool isDead;
-    private Vector3 currentSoundPosition;
+    protected bool isDead;
+    protected Vector3 currentSoundPosition;
 
     private Collider deadTrigger;
 
@@ -52,8 +53,9 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    baseReviveChance = reviveChance;
     }
 
-    private void Start()
+    public virtual void Start()
     {
+	    
 	    behaviorAgent = GetComponent<BehaviorGraphAgent>();
 	    
 	    // Check if BB reference exists and set them to our variable

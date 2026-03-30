@@ -388,7 +388,7 @@ MonoBehaviour:
   hitDamage: 5
   behaviorAgent: {fileID: 2261789745007801950}
   resetChannel: {fileID: 11400000, guid: 37d6a9adf26c2f14f9dffb207245ab19, type: 2}
-  reviveChance: 20
+  reviveChance: 0
   reviveChanceAddOnCollision: 20
   zombieAudioSource: {fileID: 148447670988395512}
   zombieScreamClip: {fileID: 8300000, guid: df2373644cfc39749b97d5fe8a0ce410, type: 3}
@@ -404,7 +404,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1214303195827788410, guid: f2573348e157fc24d88de0193adca538, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 96c89fb680eb2c246b0d82c40f394af3, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1722,8 +1722,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 1.0547413, y: 0.70621914, z: 0.21451017}
-  m_Center: {x: 0.6650758, y: 1.3901136, z: -0.05350488}
+  m_Size: {x: 1.9059262, y: 0.70621914, z: 0.21451016}
+  m_Center: {x: 1.0906577, y: 1.3901057, z: -0.053505886}
 --- !u!114 &695413575993953201
 MonoBehaviour:
   m_ObjectHideFlags: 0

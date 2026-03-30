@@ -9,5 +9,6 @@ public enum EnemyBehaviourStates
 	ReturnToSpawn = 3,
 	Attack = 4,
 	Dead = 5,
-	Stagger = 6
+	Stagger = 6,
+	RadialAttack = 7
 }

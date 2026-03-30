@@ -12,5 +12,6 @@ Heartbeat SFX : https://pixabay.com/fr/users/brvhrtz-33128829/?utm_source=link-a
 
 Zombie Scream SFX : https://pixabay.com/fr/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=47754
 Zombie hit reaction SFX : https://pixabay.com/fr/users/dragon-studio-38165424/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=357977
+Zombie Growling SFX : https://pixabay.com/fr/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=107090
 
 Ambient horror music : https://pixabay.com/fr/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=14590

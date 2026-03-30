@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Player
@@ -27,6 +29,23 @@ namespace Player
 		[SerializeField] private AudioClip emptyMagazineSound;
 		[SerializeField] private AudioClip reloadSound;
 		
+		[Header("VFX")]
+		[SerializeField] private GameObject flashVFX;
+		[SerializeField] private ParticleSystem flashParticle;
+		[SerializeField] private Light flashLight;
+		[SerializeField] private float flashDuration = 0.03f;
+		
+		[Header("Recoil")]
+		[SerializeField] private Transform armsPivot;
+		[SerializeField] private float kickbackAmount;
+		[SerializeField] private float returnSpeed;
+		[SerializeField] private float snappiness;
+		[SerializeField] private CinemachineImpulseSource impulseSource;
+
+		private Vector3 targetPosition;
+		private Vector3 currentPosition;
+		private Vector3 initialPosition;
+		
 		[Space(20), Header("Debug")]
 		[SerializeField] private bool showDebugRay;
 		private Vector3 lastRayOrigin;
@@ -44,6 +63,18 @@ namespace Player
 			cameraManager = GetComponent<CameraManager>();
 			
 			UpdateUiAmmoInfo();
+
+			initialPosition = armsPivot.localPosition;
+			impulseSource = GetComponentInChildren<CinemachineImpulseSource>();
+		}
+
+
+		private void Update()
+		{
+			// Recoil - Return to base position
+			targetPosition = Vector3.Lerp(targetPosition, initialPosition, returnSpeed * Time.deltaTime);
+			currentPosition = Vector3.Lerp(currentPosition, targetPosition, snappiness * Time.deltaTime);
+			armsPivot.localPosition = currentPosition;
 		}
 
 
@@ -94,10 +125,33 @@ namespace Player
 			
 			if (Time.time >= nextFireTime)
 			{
+				StartCoroutine(ShootFlash());
+				FireRecoil();
 				ShootRaycast();
 				UpdateUiAmmoInfo();
 				nextFireTime = Time.time + fireCooldown;
 			}
+		}
+
+
+		private IEnumerator ShootFlash()
+		{
+			flashVFX.SetActive(true);
+			if (flashParticle) flashParticle.Play();
+			if (flashLight) flashLight.enabled = true;
+			
+			yield return new WaitForSeconds(flashDuration);
+			
+			if (flashLight) flashLight.enabled = false;
+			flashVFX.SetActive(false);
+		}
+
+
+		private void FireRecoil()
+		{
+			// Moving arms
+			targetPosition -= new Vector3(0, 0, kickbackAmount);
+			impulseSource.GenerateImpulse();
 		}
 
 
