@@ -6,7 +6,7 @@ public class SoundSensitiveZombie : BaseZombie
 	[Space(20), Header("Subclass parameters")]
 	[SerializeField] private float radialAttackDamage;
 	[SerializeField] private AudioClip radialGrowlSound;
-	private BlackboardVariable<bool> bbIsSoundSensitive;
+	[HideInInspector] public BlackboardVariable<bool> bbIsSoundSensitive;
 
 	public override void Start()
 	{
@@ -29,6 +29,8 @@ public class SoundSensitiveZombie : BaseZombie
 	public override void OnSoundHeard(Vector3 soundPosition, GameObject source)
 	{
 		if (isDead) return;
+
+		if (bbIsSoundSensitive.Value) return;
 	    
 		if (currentSoundPosition == Vector3.zero)
 		{
@@ -51,5 +53,14 @@ public class SoundSensitiveZombie : BaseZombie
 		bbIsSoundSensitive.Value = true;
 		bbCurrentState.Value = EnemyBehaviourStates.Patrol; // Workaround, forces graph blackboard to be reevaluated
 		bbCurrentState.Value = EnemyBehaviourStates.Investigate;
+	}
+	
+	
+	public override void OnAttackCollision(Collider otherCollider, bool isRadialAttack)
+	{
+		if (otherCollider.TryGetComponent(out IDamageable damageable))
+		{
+			damageable.TakeDamage(radialAttackDamage, gameObject);
+		}
 	}
 }

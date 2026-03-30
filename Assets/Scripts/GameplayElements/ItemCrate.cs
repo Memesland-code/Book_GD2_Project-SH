@@ -30,7 +30,7 @@ public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 		throw new System.NotImplementedException();
 	}
 
-	public void OnAttackCollision(Collider otherCollider)
+	public void OnAttackCollision(Collider otherCollider, bool isRadialAttack)
 	{
 		throw new System.NotImplementedException();
 	}

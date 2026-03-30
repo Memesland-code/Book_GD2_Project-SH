@@ -159,11 +159,11 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    isDead = false;
     }
 
-    public void OnAttackCollision(Collider otherCollider)
+    public virtual void OnAttackCollision(Collider otherCollider, bool isRadialAttack)
     {
-	    if (otherCollider.CompareTag("Player"))
+	    if (otherCollider.TryGetComponent(out IDamageable damageable))
 	    {
-		    otherCollider.GetComponent<IDamageable>().TakeDamage(hitDamage, gameObject);
+		    damageable.TakeDamage(hitDamage, gameObject);
 	    }
     }
     

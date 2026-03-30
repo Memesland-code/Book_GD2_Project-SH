@@ -8,5 +8,5 @@ public interface IDamageable
 
 	void Revive();
 
-	void OnAttackCollision(Collider otherCollider);
+	void OnAttackCollision(Collider otherCollider, bool isRadialAttack);
 }

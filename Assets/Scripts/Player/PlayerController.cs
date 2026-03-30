@@ -336,7 +336,7 @@ namespace Player
 		}
 		
 		// Called from collision if triggerEnter detected
-		public void OnAttackCollision(Collider otherCollider)
+		public void OnAttackCollision(Collider otherCollider, bool isRadialAttack)
 		{
 			if (otherCollider.TryGetComponent(out IDamageable damageable))
 			{

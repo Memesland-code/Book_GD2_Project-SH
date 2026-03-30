@@ -2640,8 +2640,14 @@ MonoBehaviour:
   zombieAudioSource: {fileID: 263461757340029810}
   zombieScreamClip: {fileID: 8300000, guid: df2373644cfc39749b97d5fe8a0ce410, type: 3}
   zombieHeavyHitClip: {fileID: 8300000, guid: 96c89fb680eb2c246b0d82c40f394af3, type: 3}
-  radialAttackDamage: 15
+  radialAttackDamage: 20
   radialGrowlSound: {fileID: 8300000, guid: de7bc119d3d49504fb0d96cf8503a74c, type: 3}
+  bbIsSoundSensitive:
+    GUID:
+      m_Value0: 0
+      m_Value1: 0
+    Name: 
+    m_Value: 0
 --- !u!82 &263461757340029810 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 148447670988395512, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
