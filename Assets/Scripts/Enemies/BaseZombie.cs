@@ -83,7 +83,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 		    return;
 	    }
 	    
-	    if (damageSource.CompareTag("Player"))
+	    if (damageSource.CompareTag("Player") && bbCurrentState != EnemyBehaviourStates.Stagger)
 	    {
 		    bbForceChasePlayer.Value = true;
 		    bbTarget.Value = damageSource;
@@ -178,6 +178,8 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     public virtual void OnSoundHeard(Vector3 soundPosition, GameObject source)
     {
 	    if (isDead) return;
+
+	    if (bbCurrentState != EnemyBehaviourStates.Stagger) return;
 	    
 	    if (currentSoundPosition == Vector3.zero)
 	    {
@@ -208,7 +210,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 
     private void OnCollisionEnter(Collision other)
     {
-	    if (other.gameObject.CompareTag("Player") && !isDead)
+	    if (other.gameObject.CompareTag("Player") && !isDead && bbCurrentState != EnemyBehaviourStates.Attack && bbCurrentState != EnemyBehaviourStates.Stagger)
 	    {
 		    bbForceChasePlayer.Value = true;
 		    bbTarget.Value = other.gameObject;

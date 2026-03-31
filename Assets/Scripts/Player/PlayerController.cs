@@ -76,7 +76,9 @@ namespace Player
 		[SerializeField] private LayerMask horrorLayer;
 		[SerializeField] private LayerMask obstructionLayer;
 		[SerializeField] private float viewDistance;
-		[SerializeField, Range(0f, 120f)] private float peripheralConeAngle;
+		[SerializeField, Range(0f, 120f)] private float maxPeripheralConeAngle;
+		[SerializeField, Range(0f, 120f)] private float minPeripheralConeAngle;
+		private float currentPeripheralConeAngle;
 		private float peripheralLookThreshold;
 
 		[Header("SoundSystem")]
@@ -114,7 +116,7 @@ namespace Player
 		[SerializeField] bool showDebugGizmos;
 		[SerializeField] bool showDirectLookCone;
 		private Vector3 interactSphereOrigin;
-	
+
 		void Awake()
 		{
 			input = GetComponent<InputManager>();
@@ -144,7 +146,7 @@ namespace Player
 			standCenter = playerCollider.center;
 			standHeight = playerCollider.height;
 			
-			peripheralLookThreshold = Mathf.Cos(peripheralConeAngle * Mathf.Deg2Rad);
+			currentPeripheralConeAngle = maxPeripheralConeAngle;
 			
 			RefreshKnifeVisuals();
 			GameManager.Instance.GetHealthPacksUI().SetHealthPacksInfo(HealthPacks.Count, (int)(HealthPacks.FirstOrDefault()?.HealAmount ?? 0));
@@ -469,6 +471,7 @@ namespace Player
 		//* ===== Sanity System =====
 		private void UpdateSanitySystem()
 		{
+			peripheralLookThreshold = Mathf.Cos(currentPeripheralConeAngle * Mathf.Deg2Rad);
 			float highestInfluence = 0;
 			Transform cam = cameraManager.cam.transform;
 
@@ -477,20 +480,15 @@ namespace Player
 			
 			foreach (var hit in hits)
 			{
-				Vector3 dirToTarget;
-				
-				if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit rayHit, viewDistance, horrorLayer))
-					dirToTarget = (rayHit.point - cam.transform.position).normalized; // Compare with direct collision point if found
-				else
-					dirToTarget = (hit.bounds.center - cam.transform.position).normalized; // Compare with collider bounds center by default
-				
+				Vector3 dirToTarget = (hit.bounds.center - cam.position).normalized;
 				
 				float dot = Vector3.Dot(cam.forward, dirToTarget);
 				
 				// Checking if object in angle
 				if (dot < peripheralLookThreshold) continue;
 				
-				if (Physics.Raycast(cam.transform.position, dirToTarget, obstructionLayer)) continue;
+				float distToHit = Vector3.Distance(cam.position, hit.bounds.center);
+				if (Physics.Raycast(cam.position, dirToTarget, distToHit, obstructionLayer)) continue;
 				
 				// Calculates the most centered-point to determine the highest horroro in-view object
 				float angleToCenter = (dot - peripheralLookThreshold) / (1f - peripheralLookThreshold);
@@ -500,6 +498,7 @@ namespace Player
 			// Updating sanity value
 			currentSanity += (highestInfluence > 0f ? -highestInfluence : recoveryRate) * Time.deltaTime;
 			currentSanity = Mathf.Clamp(currentSanity, 0f, maxSanity);
+			currentPeripheralConeAngle = Mathf.Lerp(minPeripheralConeAngle, maxPeripheralConeAngle, currentSanity / 100);
 			
 			cameraManager.ApplySanityEffect(currentSanity);
 			
@@ -559,14 +558,11 @@ namespace Player
 
 			if (Application.isPlaying)
 			{
-				Gizmos.color = Color.magenta;
-				Gizmos.DrawRay(cameraManager.cam.transform.position, cameraManager.cam.transform.forward * 10);
-
 				Gizmos.color = Color.tomato;
-				DrawCone(cameraManager.cam.transform.position, cameraManager.cam.transform.forward, peripheralConeAngle, viewDistance);
+				DrawCone(cameraManager.cam.transform.position, cameraManager.cam.transform.forward, currentPeripheralConeAngle, viewDistance);
 			}
 
-			Gizmos.color = new Color(1, 0, 0, 0.1f);
+			Gizmos.color = new Color(1, 0, 0, 0.9f);
 			Gizmos.DrawWireSphere(transform.position, viewDistance);
 			
 			Gizmos.color = Color.rebeccaPurple;
