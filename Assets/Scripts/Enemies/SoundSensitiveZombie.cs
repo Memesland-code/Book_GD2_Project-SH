@@ -62,7 +62,10 @@ public class SoundSensitiveZombie : BaseZombie
 	{
 		if (otherCollider.TryGetComponent(out IDamageable damageable))
 		{
-			damageable.TakeDamage(radialAttackDamage, gameObject);
+			if (otherCollider.CompareTag("Player"))
+				damageable.TakeDamage(radialAttackDamage, gameObject);
+			else 
+				damageable.TakeDamage(1000, gameObject);
 		}
 	}
 }
