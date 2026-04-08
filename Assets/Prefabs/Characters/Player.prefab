@@ -7683,9 +7683,9 @@ MonoBehaviour:
   charPants: {fileID: 6096448474865404848}
   interactDistance: 3
   interactSphereRadius: 0.3
-  pickableLayer:
+  interactableLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1280
   maxSanity: 100
   sanityMaxDrainSpeed: 5
   recoveryRate: 10
@@ -7710,8 +7710,8 @@ MonoBehaviour:
   playerWeapon: {fileID: 0}
   standCameraPosition: {x: 0, y: 1.4, z: 0.35}
   crouchedCameraPosition: {x: 0, y: 0.6, z: 0.35}
-  showDebugGizmos: 1
-  showDirectLookCone: 1
+  showDebugGizmos: 0
+  showDirectLookCone: 0
 --- !u!114 &491951639126253705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7760,6 +7760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ccf47f5706335b409f5c859d85974c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.InputManager
+  pauseMenu: {fileID: 0}
   moveInput: {x: 0, y: 0}
   lookInput: {x: 0, y: 0}
   isSprinting: 0
@@ -7801,7 +7802,7 @@ MonoBehaviour:
   returnSpeed: 10
   snappiness: 20
   impulseSource: {fileID: 0}
-  showDebugRay: 1
+  showDebugRay: 0
 --- !u!95 &8468087429571766652
 Animator:
   serializedVersion: 7

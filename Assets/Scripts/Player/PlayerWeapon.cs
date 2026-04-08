@@ -220,5 +220,13 @@ namespace Player
 			Gizmos.color = Color.yellowNice;
 			Gizmos.DrawWireSphere(muzzle.position, fireHearRadius);
 		}
+		
+		//* ===== DEMO ONLY =====
+
+		public void RemoveAllAmmo()
+		{
+			currentMagazineAmmo = 0;
+			currentInventoryAmmo = 0;
+		}
 	}
 }

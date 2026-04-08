@@ -4,6 +4,7 @@ public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 {
 	[SerializeField] private LootTable lootTable;
 	[SerializeField] private float breakHearRadius;
+	[SerializeField] private AudioClip breakSound;
 	
 	[Header("DEBUG")]
 	[SerializeField] private bool showDebugGizmos;
@@ -12,7 +13,7 @@ public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 	{
 		LootItem(GameManager.Instance.SelectLoot(lootTable.tiers));
 		
-		GetComponent<AudioSource>().Play();
+		AudioSource.PlayClipAtPoint(breakSound, transform.position);
 		SoundSystem.EmitSound(transform.position, breakHearRadius, gameObject);
 		gameObject.SetActive(false);
 	}
@@ -61,5 +62,10 @@ public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 		
 		Gizmos.color = Color.orange;
 		Gizmos.DrawWireSphere(transform.position, breakHearRadius);
+	}
+
+	public void RespawnCrate()
+	{
+		gameObject.SetActive(true);
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,7 +66,7 @@ namespace Player
 		[Header("Interaction System")]
 		[SerializeField] private float interactDistance;
 		[SerializeField] private float interactSphereRadius;
-		[SerializeField] private LayerMask pickableLayer;
+		[SerializeField] private LayerMask interactableLayers;
 		
 		[Header("Sanity System")]
 		[SerializeField] private float maxSanity;
@@ -265,6 +266,8 @@ namespace Player
 
 			if (currentHealth <= 0)
 			{
+				if (damageSource.GetComponent<IInteractable>() != null) currentHealth = 1;
+				
 				animator.SetTrigger(Death);
 				StartCoroutine(PlayerDeath());
 			}
@@ -392,7 +395,7 @@ namespace Player
 				interactSphereOrigin = sphereOrigin;
 			}
 			
-			Collider[] hits = Physics.OverlapSphere(sphereOrigin, interactSphereRadius, pickableLayer);
+			Collider[] hits = Physics.OverlapSphere(sphereOrigin, interactSphereRadius, interactableLayers);
 
 			if (hits.Length > 0)
 			{
@@ -457,6 +460,8 @@ namespace Player
 
 		public void UseHealthPack()
 		{
+			if (currentHealth == maxHealth) return;
+			
 			var pack = HealthPacks.FirstOrDefault();
 			if (pack != null)
 			{
@@ -595,6 +600,17 @@ namespace Player
 				}
 
 				prevPoint = point;
+			}
+		}
+		
+		
+		//* ===== DEMO ONLY =====
+
+		private void OnTriggerEnter(Collider other)
+		{
+			if (other.TryGetComponent(out CheckPoint checkpoint))
+			{
+				playerSpawnPosition = checkpoint.GetCheckpointPosition();
 			}
 		}
 	}
