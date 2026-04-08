@@ -7,7 +7,7 @@ public class LootEntry
     public ItemData itemData;
     public float weight;
 
-    [Header("Possible value range of the item (Min inclusive, Max inclusive)")]
+    [Header("Min inclusive, Max inclusive")]
     public Vector2 valueRange;
 }
 
@@ -15,8 +15,8 @@ public class LootEntry
 public class LootTier
 {
 	public string name;
-	[Tooltip("Will trigger if actual number is strictly inferior"), Range(0, 100)] public float healthThreshold;
-	[Tooltip("Will trigger if actual number is strictly inferior"), Range(0, 100)] public float ammoThreshold;
+	[Range(0, 100)] public float healthThreshold;
+	[Range(0, 100)] public float ammoThreshold;
 	public List<LootEntry> possibleLoots;
 }
 

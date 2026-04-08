@@ -76,6 +76,11 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    nextDamageAcceptTime = Time.time + damageCooldown;
 	    
 	    currentHealth -= damageAmount;
+	    
+	    if (damageSource.TryGetComponent(out PlayerController player) && (int)damageAmount == (int)player.stabDamage)
+	    {
+		    player.DamageReceivedByTarget(true);
+	    }
 
 	    if (currentHealth <= 0)
 	    {
@@ -107,9 +112,8 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 		    return;
 	    }
 	    
-	    if (damageSource.TryGetComponent(out PlayerController player) && (int)damageAmount == (int)player.stabDamage)
+	    if (damageSource.GetComponent<PlayerController>() != null && (int)damageAmount == (int)player.stabDamage)
 	    {
-		    player.DamageReceivedByTarget(true);
 		    animator.SetTrigger(HitReaction);
 	    }
     }
@@ -139,7 +143,6 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    bbCurrentState.Value = EnemyBehaviourStates.Dead;
 	    
 	    deadTrigger.enabled = true;
-	    
     }
 
     // Effective revive to animate zombie

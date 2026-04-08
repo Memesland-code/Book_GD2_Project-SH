@@ -10,7 +10,6 @@ public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 	
 	public void TakeDamage(float damageAmount, GameObject damageSource)
 	{
-		
 		LootItem(GameManager.Instance.SelectLoot(lootTable.tiers));
 		
 		GetComponent<AudioSource>().Play();

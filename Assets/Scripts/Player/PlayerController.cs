@@ -197,7 +197,7 @@ namespace Player
 				input.isCrouched = false;
 				currentSpeed = sprintSpeed;
 				animator.SetBool(IsCrouched, false);
-				animator.SetFloat(MoveX, input.moveInput.x + 0.25f); // Virtually sets animator to running state
+				animator.SetFloat(MoveX, input.moveInput.x + 0.25f);
 				animator.SetFloat(MoveY, input.moveInput.y + 0.25f);
 			}
 			else if (input.isCrouched)
@@ -422,7 +422,6 @@ namespace Player
 			
 			Knives.Add(knife);
 			RefreshKnifeVisuals();
-			
 		}
 		
 		private void RefreshKnifeVisuals()

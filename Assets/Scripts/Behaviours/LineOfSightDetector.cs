@@ -46,7 +46,6 @@ namespace Behaviours
 					}
 				}
 			}
-
 			
 			side1 = target.transform.position - transform.position;
 			side2 = transform.forward;
