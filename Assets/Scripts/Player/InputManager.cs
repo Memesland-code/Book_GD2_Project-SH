@@ -10,6 +10,8 @@ namespace Player
 		private PlayerController playerController;
 		private PlayerWeapon playerWeapon;
 		private PlayerControls inputActions;
+		
+		public GameObject pauseMenu;
 
 		private void Awake()
 		{
@@ -55,6 +57,9 @@ namespace Player
 			
 			//? Healing
 			inputActions.Player.Heal.performed += Heal;
+			
+			//? Pause Menu
+			inputActions.Player.PauseMenu.performed += OpenPauseMenu;
 		}
 
 		
@@ -153,6 +158,15 @@ namespace Player
 		private void Heal(InputAction.CallbackContext context)
 		{
 			playerController.UseHealthPack();
+		}
+
+
+
+		private void OpenPauseMenu(InputAction.CallbackContext context)
+		{
+			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.Confined;
+			pauseMenu.SetActive(true);
 		}
 	}
 }

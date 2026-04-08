@@ -7674,7 +7674,7 @@ MonoBehaviour:
   aimMoveSpeedMultiplier: 0.5
   attackPoint: {fileID: 4131846544023252268}
   punchDamage: 5
-  stabDamage: 40
+  stabDamage: 20
   canAttack: 1
   charBody: {fileID: 7678647333002811587}
   charEyeLashes: {fileID: 497801429924315968}

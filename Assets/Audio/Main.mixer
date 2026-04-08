@@ -81,6 +81,8 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 8ff4d21594eab8644a8afe8abeb5accd
     name: SanityLowPass
+  - guid: 574ffb11eb9a994448646feb7230ca6e
+    name: MasterVolume
   m_AudioMixerGroupViews:
   - guids:
     - ab4d747d02cdcb148bc59e0613a8a7ed
@@ -136,7 +138,8 @@ AudioMixerSnapshotController:
   m_Name: Snapshot
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 173a19e8fa3252747a1bf47dd1b07b70
-  m_FloatValues: {}
+  m_FloatValues:
+    574ffb11eb9a994448646feb7230ca6e: -5.4218063
   m_TransitionOverrides: {}
 --- !u!243 &989578444372768269
 AudioMixerGroupController:
