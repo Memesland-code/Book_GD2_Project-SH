@@ -16,8 +16,12 @@ public class PlayerDamager : MonoBehaviour
 			if (isOneTime) alreadyHit = true;
 			
 			if (!isSetHealth) playerController.TakeDamage(zoneDamage, gameObject, false);
-			
-			if (isSetHealth) playerController.SetCurrentHealth(zoneDamage);
+
+			if (isSetHealth)
+			{
+				playerController.SetCurrentHealth(zoneDamage);
+				playerController.UpdateHealthUI();
+			}
 		}
 	}
 }

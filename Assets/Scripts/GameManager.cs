@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Player;
@@ -9,7 +7,21 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-	public static GameManager Instance;
+	public static GameManager Instance
+	{
+		get
+		{
+			if (_instance == null)
+			{
+				_instance = FindFirstObjectByType<GameManager>();
+			}
+
+			return _instance;
+		}
+		private set => _instance = value;
+	}
+
+	private static GameManager _instance;
 
 	[HideInInspector] public GameObject player;
 	[HideInInspector] public PlayerController playerController;

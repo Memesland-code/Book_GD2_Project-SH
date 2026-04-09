@@ -65,7 +65,6 @@ namespace Player
 			UpdateUiAmmoInfo();
 
 			initialPosition = armsPivot.localPosition;
-			impulseSource = GetComponentInChildren<CinemachineImpulseSource>();
 		}
 
 
@@ -169,7 +168,7 @@ namespace Player
 			// Play muzzle flash VFX
 			
 			SoundSystem.EmitSound(muzzle.position, fireHearRadius, gameObject);
-			
+
 			Vector3 origin = cameraManager.cam.transform.position;
 			Vector3 direction = cameraManager.cam.transform.forward;
 			

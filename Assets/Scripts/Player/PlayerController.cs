@@ -262,7 +262,7 @@ namespace Player
 			
 			currentHealth -= damageAmount;
 			
-			GameManager.Instance.GetPlayerLifeUI().SetPlayerLifePercent(currentHealth/maxHealth);
+			UpdateHealthUI();
 
 			if (currentHealth <= 0)
 			{
@@ -271,6 +271,11 @@ namespace Player
 				animator.SetTrigger(Death);
 				StartCoroutine(PlayerDeath());
 			}
+		}
+
+		public void UpdateHealthUI()
+		{
+			GameManager.Instance.GetPlayerLifeUI().SetPlayerLifePercent(currentHealth/maxHealth);
 		}
 
 		
@@ -438,7 +443,7 @@ namespace Player
 			RefreshKnifeVisuals();
 		}
 		
-		private void RefreshKnifeVisuals()
+		public void RefreshKnifeVisuals()
 		{
 			KnifeUI knifeUI = GameManager.Instance.GetKnifeUI();
 			knifeUI.RefreshKnivesUI(Knives.Count, CurrentKnife?.Durability ?? 0);

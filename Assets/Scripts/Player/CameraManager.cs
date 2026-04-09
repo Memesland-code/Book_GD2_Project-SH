@@ -60,7 +60,7 @@ namespace Player
 
 		private void Start()
 		{ 
-			cam = GameObject.FindGameObjectWithTag("CinemachineCam").GetComponent<CinemachineCamera>();
+			cam = FindFirstObjectByType<CinemachineCamera>();
 			camNoise = cam.GetComponent<CinemachineBasicMultiChannelPerlin>();
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;

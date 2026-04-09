@@ -23,7 +23,7 @@ public class CheckPoint : MonoBehaviour
 		if (resetknives)
 		{
 			GameManager.Instance.playerController.Knives.Clear();
-			GameManager.Instance.GetKnifeUI().RefreshKnivesUI(0, 0);
+			GameManager.Instance.playerController.RefreshKnifeVisuals();
 		}
 		
 		return transform.GetChild(0).position;
