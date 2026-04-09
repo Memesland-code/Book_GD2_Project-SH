@@ -15,7 +15,7 @@ namespace Player
 		private CinemachineBasicMultiChannelPerlin camNoise;
 
 		[Header("Basic controls")]
-		[SerializeField] private float mouseSensivity;
+		public float mouseSensivity;
 		[SerializeField] private Transform playerBody;
 		[SerializeField] private Transform cameraPos;
 		[SerializeField] private float topClamp = 75f;

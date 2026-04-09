@@ -393,6 +393,11 @@ MonoBehaviour:
   zombieAudioSource: {fileID: 148447670988395512}
   zombieScreamClip: {fileID: 8300000, guid: df2373644cfc39749b97d5fe8a0ce410, type: 3}
   zombieHeavyHitClip: {fileID: 8300000, guid: 96c89fb680eb2c246b0d82c40f394af3, type: 3}
+  maxStuckTime: 8
+  testZombieSight: 0
+  wallsToChange: []
+  unseenMaterial: {fileID: 0}
+  seenMaterial: {fileID: 0}
 --- !u!82 &148447670988395512
 AudioSource:
   m_ObjectHideFlags: 0

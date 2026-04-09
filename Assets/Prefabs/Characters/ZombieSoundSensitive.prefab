@@ -2556,31 +2556,31 @@ PrefabInstance:
       objectReference: {fileID: 9000000, guid: ec35269bebe48b24f8e2c8f80ec4cbaa, type: 3}
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 33.12
+      value: 229.15396
       objectReference: {fileID: 0}
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25000006
+      value: -0.27999973
       objectReference: {fileID: 0}
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -34.51
+      value: -3.2693
       objectReference: {fileID: 0}
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071071
       objectReference: {fileID: 0}
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.7071065
       objectReference: {fileID: 0}
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2588,7 +2588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 7269089014645662687, guid: 0360fbb7bd601a147afbf9a181507623, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2640,6 +2640,11 @@ MonoBehaviour:
   zombieAudioSource: {fileID: 263461757340029810}
   zombieScreamClip: {fileID: 8300000, guid: df2373644cfc39749b97d5fe8a0ce410, type: 3}
   zombieHeavyHitClip: {fileID: 8300000, guid: 96c89fb680eb2c246b0d82c40f394af3, type: 3}
+  maxStuckTime: 8
+  testZombieSight: 0
+  wallsToChange: []
+  unseenMaterial: {fileID: 0}
+  seenMaterial: {fileID: 0}
   radialAttackDamage: 20
   radialGrowlSound: {fileID: 8300000, guid: de7bc119d3d49504fb0d96cf8503a74c, type: 3}
   bbIsSoundSensitive:

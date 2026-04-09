@@ -7687,15 +7687,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1280
   maxSanity: 100
-  sanityMaxDrainSpeed: 5
-  recoveryRate: 10
+  sanityMaxDrainSpeed: 4
+  recoveryRate: 15
   horrorLayer:
     serializedVersion: 2
     m_Bits: 576
   obstructionLayer:
     serializedVersion: 2
     m_Bits: 9
-  viewDistance: 12
+  viewDistance: 7.5
   maxPeripheralConeAngle: 60
   minPeripheralConeAngle: 30
   mainMixer: {fileID: 24100000, guid: f2573348e157fc24d88de0193adca538, type: 2}
@@ -7703,7 +7703,7 @@ MonoBehaviour:
   stabSound: {fileID: 8300000, guid: 72a40457b004fa2409b678d58ae5d83a, type: 3}
   heartBeatSound: {fileID: 4010010971466690876}
   normalFrequency: 22000
-  muffledFrequency: 1
+  muffledFrequency: 2000
   minPitch: 0.7
   maxPitch: 1.5
   maxVolume: 1
@@ -7724,7 +7724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9cc10bcd04ff1b4880cd6be12efcced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.CameraManager
-  mouseSensivity: 4
+  mouseSensivity: 11
   playerBody: {fileID: 3986012819292833151}
   cameraPos: {fileID: 7553435800174939199}
   topClamp: 70
@@ -7785,10 +7785,10 @@ MonoBehaviour:
   weaponRange: 100
   weaponDamage: 10
   maxMagazineAmmo: 10
-  currentInventoryAmmo: 100
+  currentInventoryAmmo: 0
   reloadTime: 0.5
   fireCooldown: 0.5
-  fireHearRadius: 11
+  fireHearRadius: 8
   weaponAudioSource: {fileID: 7165445254458025053}
   fireSound: {fileID: 8300000, guid: 47cb4fbd86f65b14ba219fc9332df227, type: 3}
   emptyMagazineSound: {fileID: 8300000, guid: 9b59c942f34ab484eac94588954f5acd, type: 3}
@@ -7801,8 +7801,8 @@ MonoBehaviour:
   kickbackAmount: 0.15
   returnSpeed: 10
   snappiness: 20
-  impulseSource: {fileID: 0}
-  showDebugRay: 0
+  impulseSource: {fileID: 1710073116088520749}
+  showDebugRay: 1
 --- !u!95 &8468087429571766652
 Animator:
   serializedVersion: 7
@@ -8240,7 +8240,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 0.45, y: 0.45, z: 2}
+  m_Size: {x: 2.84, y: 1.17, z: 2}
   m_Center: {x: 0, y: 0, z: 0.6}
 --- !u!1 &4190019102164832457
 GameObject:

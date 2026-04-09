@@ -4,7 +4,7 @@ public class Door : MonoBehaviour, IDamageable
 {
 	[SerializeField] private AudioClip breakSound;
 	
-	public void TakeDamage(float damageAmount, GameObject damageSource)
+	public void TakeDamage(float damageAmount, GameObject damageSource, bool ignoreCooldown)
 	{
 		AudioSource.PlayClipAtPoint(breakSound, transform.position);
 		gameObject.SetActive(false);

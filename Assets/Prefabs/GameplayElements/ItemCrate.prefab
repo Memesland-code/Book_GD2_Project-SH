@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8950207305994692305}
   - component: {fileID: 1513932885045925487}
   - component: {fileID: 1293773733534248490}
+  - component: {fileID: 2346487036242143800}
   m_Layer: 0
   m_Name: ItemCrate
   m_TagString: Untagged
@@ -255,3 +256,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!208 &2346487036242143800
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623810446843341907}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.3, y: 0.3, z: 0.35}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.35}
+  m_TimeToStationary: 0.5

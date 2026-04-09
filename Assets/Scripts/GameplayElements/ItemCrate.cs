@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 {
@@ -9,12 +10,14 @@ public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 	[Header("DEBUG")]
 	[SerializeField] private bool showDebugGizmos;
 	
-	public void TakeDamage(float damageAmount, GameObject damageSource)
+	public void TakeDamage(float damageAmount, GameObject damageSource, bool ignoreCooldown)
 	{
 		LootItem(GameManager.Instance.SelectLoot(lootTable.tiers));
 		
 		AudioSource.PlayClipAtPoint(breakSound, transform.position);
 		SoundSystem.EmitSound(transform.position, breakHearRadius, gameObject);
+		
+		GetComponent<NavMeshObstacle>().enabled = false;
 		gameObject.SetActive(false);
 	}
 	
@@ -67,5 +70,6 @@ public class ItemCrate : MonoBehaviour, IDamageable, ILootable
 	public void RespawnCrate()
 	{
 		gameObject.SetActive(true);
+		GetComponent<NavMeshObstacle>().enabled = true;
 	}
 }

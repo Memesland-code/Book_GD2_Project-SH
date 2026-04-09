@@ -32,7 +32,7 @@ public class SoundSensitiveZombie : BaseZombie
 
 		if (bbIsSoundSensitive.Value) return;
 		
-		if (bbCurrentState != EnemyBehaviourStates.Stagger) return;
+		if (bbCurrentState == EnemyBehaviourStates.Stagger) return;
 	    
 		if (currentSoundPosition == Vector3.zero)
 		{

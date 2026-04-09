@@ -254,9 +254,9 @@ namespace Player
 		
 		
 		//* ===== IDamageable Systems =====
-		public void TakeDamage(float damageAmount, GameObject damageSource)
+		public void TakeDamage(float damageAmount, GameObject damageSource, bool ignoreCooldown)
 		{
-			if (isDead || Time.time <= nextDamageAcceptTime) return;
+			if ((isDead || Time.time <= nextDamageAcceptTime) && !ignoreCooldown) return;
 
 			nextDamageAcceptTime = Time.time + damageCooldown;
 			
@@ -390,6 +390,12 @@ namespace Player
 					pickable.OnPickUp(this);
 					return;
 				}
+
+				if (hit.collider.TryGetComponent(out IInteractable interactable))
+				{
+					interactable.Interact(gameObject);
+					return;
+				}
 				
 				sphereOrigin = hit.point;
 				interactSphereOrigin = sphereOrigin;
@@ -406,6 +412,11 @@ namespace Player
 				if (closest.TryGetComponent(out IPickable spherePickable))
 				{
 					spherePickable.OnPickUp(this);
+				}
+				
+				if (closest.TryGetComponent(out IInteractable interactable))
+				{
+					interactable.Interact(gameObject);
 				}
 			}
 		}
@@ -612,6 +623,11 @@ namespace Player
 			{
 				playerSpawnPosition = checkpoint.GetCheckpointPosition();
 			}
+		}
+
+		public void SetCurrentHealth(float newHealth)
+		{
+			currentHealth = Mathf.Clamp(newHealth, 1, 100);
 		}
 	}
 }

@@ -89,6 +89,13 @@ namespace Player
 		public void Reload()
 		{
 			if (!playerController.canAttack) return;
+
+			if (currentInventoryAmmo == 0)
+			{
+				weaponAudioSource.clip = emptyMagazineSound;
+				weaponAudioSource.Play();
+				return;
+			}
 			
 			int ammoToReload = maxMagazineAmmo - currentMagazineAmmo;
 
@@ -227,6 +234,7 @@ namespace Player
 		{
 			currentMagazineAmmo = 0;
 			currentInventoryAmmo = 0;
+			UpdateUiAmmoInfo();
 		}
 	}
 }

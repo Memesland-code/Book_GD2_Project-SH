@@ -41,11 +41,6 @@ public class OptionsMenu : MonoBehaviour
 		gameObject.SetActive(false);
 	}
 
-	public void SetVolume(float volume)
-	{
-		audioMixer.SetFloat("MasterVolume", volume);
-	}
-
 	public void SetQuality(int qualityIndex)
 	{
 		QualitySettings.SetQualityLevel(qualityIndex);
@@ -59,5 +54,15 @@ public class OptionsMenu : MonoBehaviour
 	public void SetResolution(int resolutionIndex)
 	{
 		Screen.SetResolution(resolutions[resolutionIndex].width, resolutions[resolutionIndex].height, Screen.fullScreen);
+	}
+
+	public void SetVolume(float volume)
+	{
+		audioMixer.SetFloat("MasterVolume", volume);
+	}
+
+	public void SetMouseSensivity(float sensivity)
+	{
+		GameManager.Instance.SetMouseSensivity(sensivity);
 	}
 }

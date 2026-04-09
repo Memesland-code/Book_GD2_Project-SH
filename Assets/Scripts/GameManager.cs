@@ -176,4 +176,11 @@ public class GameManager : MonoBehaviour
 		
 		return healthPacksUI;
 	}
+
+
+
+	public void SetMouseSensivity(float sensivity)
+	{
+		player.GetComponent<CameraManager>().mouseSensivity = sensivity;
+	}
 }

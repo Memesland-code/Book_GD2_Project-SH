@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Player;
 using Unity.Behavior;
 using UnityEngine;
@@ -43,6 +45,18 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     protected Vector3 currentSoundPosition;
 
     private Collider deadTrigger;
+    [SerializeField] private float maxStuckTime;
+    private float stuckTimer;
+    
+    [Header("DEMO ONLY"), Space(10)]
+    [SerializeField] private bool testZombieSight;
+
+    [SerializeField] private List<GameObject> wallsToChange;
+    [SerializeField] private Material unseenMaterial;
+    [SerializeField] private Material seenMaterial;
+    private BlackboardVariable<bool> bbIsTargetDetected;
+
+    private NavMeshAgent agent;
 
     private void Awake()
     {
@@ -51,6 +65,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    deadTrigger = GetComponent<SphereCollider>();
 	    deadTrigger.enabled = false;
 	    baseReviveChance = reviveChance;
+	    agent = GetComponent<NavMeshAgent>();
     }
 
     public virtual void Start()
@@ -63,12 +78,49 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
 	    if (behaviorAgent.BlackboardReference.GetVariable("InvestigatePosition", out bbInvestigatePosition)) {}
 	    if (behaviorAgent.BlackboardReference.GetVariable("Target", out bbTarget)) {}
 	    if (behaviorAgent.BlackboardReference.GetVariable("ForceChasePlayer", out bbForceChasePlayer)) {}
+	    if (behaviorAgent.BlackboardReference.GetVariable("IsTargetDetected", out bbIsTargetDetected)) {}
     }
 
-    
-    
+
+    private void Update()
+    {
+	    if (testZombieSight)
+	    {
+		    if (bbIsTargetDetected.Value)
+		    {
+			    foreach (GameObject wall in wallsToChange)
+			    {
+				    wall.GetComponent<MeshRenderer>().material = seenMaterial;
+			    }
+		    }
+		    else
+		    {
+			    foreach (GameObject wall in wallsToChange)
+			    {
+				    wall.GetComponent<MeshRenderer>().material = unseenMaterial;
+			    }
+		    }
+	    }
+
+	    if (agent.hasPath && agent.velocity.magnitude < 0.01f)
+	    {
+		    stuckTimer += Time.deltaTime;
+		    if (stuckTimer > maxStuckTime)
+		    {
+			    agent.ResetPath();
+			    stuckTimer = 0;
+			    bbCurrentState.Value = EnemyBehaviourStates.ReturnToSpawn;
+		    }
+	    }
+	    else
+	    {
+		    stuckTimer = 0;
+	    }
+    }
+
+
     //* ===== IDamageable and attack Related =====
-    public void TakeDamage(float damageAmount, GameObject damageSource)
+    public void TakeDamage(float damageAmount, GameObject damageSource, bool ignoreCooldown)
     {
 	    if (isDead) return;
 	    if (Time.time <= nextDamageAcceptTime) return;
@@ -182,7 +234,7 @@ public class BaseZombie : MonoBehaviour, IDamageable, ISoundListener
     {
 	    if (isDead) return;
 
-	    if (bbCurrentState != EnemyBehaviourStates.Stagger) return;
+	    if (bbCurrentState == EnemyBehaviourStates.Stagger) return;
 	    
 	    if (currentSoundPosition == Vector3.zero)
 	    {

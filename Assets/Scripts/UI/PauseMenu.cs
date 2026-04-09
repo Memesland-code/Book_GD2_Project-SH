@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
 	[SerializeField] private GameObject optionsMenu;
-	
+
 	public void OnEnable()
 	{
 		Time.timeScale = 0;
