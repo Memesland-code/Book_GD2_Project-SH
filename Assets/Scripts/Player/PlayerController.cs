@@ -67,6 +67,8 @@ namespace Player
 		[SerializeField] private float interactDistance;
 		[SerializeField] private float interactSphereRadius;
 		[SerializeField] private LayerMask interactableLayers;
+		[SerializeField] private AudioClip interactSound;
+		[SerializeField] private AudioClip pikcupItemSound;
 		
 		[Header("Sanity System")]
 		[SerializeField] private float maxSanity;
@@ -97,7 +99,7 @@ namespace Player
 		[SerializeField] private float maxPitch;
 		[SerializeField] private float maxVolume;
 		
-		private InputManager input;
+		[HideInInspector] public InputManager input;
 		private Rigidbody rb;
 		private Animator animator;
 		private CapsuleCollider playerCollider;
@@ -117,7 +119,7 @@ namespace Player
 		[SerializeField] bool showDebugGizmos;
 		[SerializeField] bool showDirectLookCone;
 		private Vector3 interactSphereOrigin;
-
+		
 		void Awake()
 		{
 			input = GetComponent<InputManager>();
@@ -393,12 +395,14 @@ namespace Player
 				if (hit.collider.TryGetComponent(out IPickable pickable))
 				{
 					pickable.OnPickUp(this);
+					AudioSource.PlayClipAtPoint(pikcupItemSound, transform.position);
 					return;
 				}
 
 				if (hit.collider.TryGetComponent(out IInteractable interactable))
 				{
 					interactable.Interact(gameObject);
+					AudioSource.PlayClipAtPoint(interactSound, transform.position);
 					return;
 				}
 				
@@ -417,11 +421,13 @@ namespace Player
 				if (closest.TryGetComponent(out IPickable spherePickable))
 				{
 					spherePickable.OnPickUp(this);
+					AudioSource.PlayClipAtPoint(pikcupItemSound, transform.position);
 				}
 				
 				if (closest.TryGetComponent(out IInteractable interactable))
 				{
 					interactable.Interact(gameObject);
+					AudioSource.PlayClipAtPoint(interactSound, transform.position);
 				}
 			}
 		}

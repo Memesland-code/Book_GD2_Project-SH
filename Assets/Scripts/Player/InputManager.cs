@@ -11,7 +11,7 @@ namespace Player
 		private PlayerWeapon playerWeapon;
 		private PlayerControls inputActions;
 		
-		public GameObject pauseMenu;
+		[SerializeField] private GameObject pauseMenu;
 
 		private void Awake()
 		{
